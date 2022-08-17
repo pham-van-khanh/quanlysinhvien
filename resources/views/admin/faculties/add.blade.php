@@ -1,18 +1,18 @@
 @extends('admin.admin-master')
-@section('title', 'Add Subject')
-@section('content-title', 'Add Subject')
-@section('danh-muc', 'Add Subject')
+@section('title', 'Add Faculty')
+@section('content-title', 'Add Faculty')
+@section('danh-muc', 'Add Faculty')
 @section('content')
 
 
-    <form action="{{route('subjects.store')}} " method="post" enctype="multipart/form-data">
+    <form action="{{route('faculties.store')}} " method="post" enctype="multipart/form-data">
         <br>
         @csrf
         @include('admin.admin-alert')
         <div class="row mb-4">
             <div class="col">
                 <div class="form-outline">
-                    <label class="form-label" for="form3Example1">Name Subject</label>
+                    <label class="form-label" for="form3Example1">Name Faculty</label>
                     <input type="text" id="form3Example1" value="{{ old('name') }}" name="name"
                         class="form-control" />
                     @error('name')

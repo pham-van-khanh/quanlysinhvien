@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('admin')->group(function () {
+    Route::resource('faculties',FacultyController::class);
+    Route::resource('subjects',SubjectController::class);
 });

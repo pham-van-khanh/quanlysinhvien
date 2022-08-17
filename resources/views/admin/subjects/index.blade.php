@@ -1,17 +1,13 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Faculty')
-@section('title', 'List Faculty')
-@section('danh-muc', 'List Faculty')
+@section('content-title', 'List Subjects')
+@section('title', 'List Subjects')
+@section('danh-muc', 'List Subjects')
 @section('content')
     <div>
     </div>
 
-{{-- @include('admin.admin-alert')--}}
-    @if(session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
-        </div>
-    @endif
+ @include('admin.admin-alert')
+
 <br>
 
 <form action="">
@@ -29,11 +25,11 @@
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stt</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            <a href="{{route('faculties.create')}}" class="btn btn-info btn-sm"> Add Faculty </a></th>
+                            <a href="{{route('subjects.create')}}" class="btn btn-info btn-sm"> Add Subjects </a></th>
                     </tr>
                 </thead>
                 <tbody>
-                   @foreach ($faculties as $index => $item)
+                   @foreach ($subjects as $index => $item)
                    <tr>
                        <td>
                            {{$index+1}}
@@ -43,7 +39,7 @@
                        </td>
 
                        <td class="align-middle">
-                           <a href="{{ route('faculties.edit', $item->id) }}">
+                           <a href="{{ route('subjects.edit', $item->id) }}">
                                <button class="btn btn-danger" style="font-size:9px"href="javascript:;"
                                        class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                        data-original-title="Edit user">
@@ -58,5 +54,5 @@
                 </tbody>
             </table>
         </div>
-        <div>{{ $faculties->links() }}</div>
+        <div>{{ $subjects->links() }}</div>
     @endsection
