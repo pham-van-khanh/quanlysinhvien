@@ -45,16 +45,17 @@
                                 <button class="btn btn-danger" style="font-size:9px"href="javascript:;"
                                         class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                         data-original-title="Edit user">
-                                    Sửa
+                                    Edit
                                 </button>
                             </a>
-                            <a href="{{ route('faculties.destroy', ['faculty' =>$item->id]) }}">
-                                <button class="btn btn-danger" style="font-size:9px"href="javascript:;"
-                                        class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                                        data-original-title="Edit user">
-                                    Sửa
-                                </button>
-                            </a>
+                            <form method="POST" action="{{ route('faculties.destroy', $item->id) }}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <div class="form-group">
+                                    <input onclick="return confirm('Are you sure?')" type="submit" class="btn btn-warning btn-sm btnDelete" value="Delete">
+                                </div>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -62,4 +63,16 @@
             </table>
         </div>
         <div>{{ $faculties->links() }}</div>
-    @endsection
+        <script>
+            $('.btnDelete').click(function(e) {
+                e.preventDefault();
+                var href = $(this).attr('href');
+                $('#form-delete').attr('action', href);
+                if (confirm('Are you sure?')) {
+                    $('#form-delete').submit();
+                }
+            })
+        </script>
+
+@endsection
+

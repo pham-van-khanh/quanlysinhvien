@@ -111,8 +111,9 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy($id)
     {
+        $faculty = Faculty::findOrFail($id);
         $faculty->delete();
         Session::flash('success', 'Xóa khóa học thành công');
         return redirect()->route('faculties.index');
