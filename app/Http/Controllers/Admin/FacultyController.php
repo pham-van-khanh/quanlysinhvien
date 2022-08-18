@@ -19,7 +19,7 @@ class FacultyController extends Controller
     public function index(){
         $faculties = Faculty::select('faculties.*')
         ->orderBy('id','DESC')
-        ->Paginate(7);
+        ->Paginate(5);
      return view('admin.faculties.index',['faculties'=>$faculties]);
     }
 
@@ -46,11 +46,11 @@ class FacultyController extends Controller
             $faculty = new Faculty();
             $faculty->name = $data['name'];
             $faculty->save();
-            Session::flash('success', 'Thêm mới khóa học thành công');
+            Session::flash('success', 'Create Faculty Successful');
             return redirect()->back();
             }
             catch (\Exception $err){
-                Session::flash('error', 'Thêm mới khóa không học thành công');
+                Session::flash('error', 'Create Faculty Unsuccessful');
                 Log::info($err->getMessage());
                 return false;
             }
@@ -76,8 +76,11 @@ class FacultyController extends Controller
      */
     public function edit($id)
     {
-       $faculty = Faculty::find($id);
-       return view('admin.faculties.edit',['faculty' =>$faculty]);
+        $faculty = Faculty::find($id);
+        return response()->json([
+            'faculty' => $faculty,
+            'id' => $faculty->id
+        ]);
     }
 
     /**
@@ -94,11 +97,12 @@ class FacultyController extends Controller
             $faculty =  Faculty::find($id);
             $faculty->name = $data['name'];
             $faculty->save();
-            Session::flash('success', 'Cập nhật khóa học thành công');
+            return response()->json($faculty);
+            Session::flash('success', 'Update Faculty Successful');
             return redirect()->route('faculties.index');
         }
         catch (\Exception $err){
-            Session::flash('error', 'Cập nhật khóa học không thành công');
+            Session::flash('error', 'Update Faculty Unsuccessful');
             Log::info($err->getMessage());
             return false;
         }
@@ -115,7 +119,7 @@ class FacultyController extends Controller
     {
         $faculty = Faculty::findOrFail($id);
         $faculty->delete();
-        Session::flash('success', 'Xóa khóa học thành công');
+        Session::flash('success', 'Delete Faculty Successful');
         return redirect()->route('faculties.index');
     }
 }

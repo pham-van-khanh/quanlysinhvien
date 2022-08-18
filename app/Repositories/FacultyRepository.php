@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
-class FacultyRepository
+class   FacultyRepository
 {
+        public  function getList(){
 
+        }
 }

@@ -4,17 +4,13 @@
 @section('danh-muc', 'Add Faculty')
 @section('content')
 
-
-    <form action="{{route('faculties.store')}} " method="post" enctype="multipart/form-data">
-        <br>
-        @csrf
-        @include('admin.admin-alert')
+    @include('admin.admin-alert')
+   {{Form::open(array('method' => 'post','route' =>'faculties.store'))}}
         <div class="row mb-4">
             <div class="col">
                 <div class="form-outline">
-                    <label class="form-label" for="form3Example1">Name Faculty</label>
-                    <input type="text" id="form3Example1" value="{{ old('name') }}" name="name"
-                        class="form-control" />
+                  {{    Form::label('name', 'Name Faculty') }}
+                    {{ Form::text('name',old('name'),array('class'=>'form-control')) }}
                     @error('name')
                         <h6 class="text-danger">{{ $message }} </h6>
                     @enderror
@@ -23,9 +19,8 @@
 
         </div>
 
-        <button type="submit" class="btn btn-danger btn-block mb-4">Tạo mới</button>
-        <!-- Register buttons -->
-        <button type="reset" class="btn btn-warning btn-block mb-4">Nhập lại</button>
-
-    </form>
+            <button type="submit" class="btn btn-danger btn-block mb-4">Create</button>
+            <!-- Register buttons -->
+            <button type="reset" class="btn btn-warning btn-block mb-4">Reset</button>
+    {{Form::close()}}
 @endsection

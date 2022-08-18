@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubjectRequest;
 use App\Models\Faculty;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class SubjectController extends Controller
 {
@@ -37,18 +39,18 @@ class SubjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SubjectRequest $request)
     {
         try {
             $data = $request->all();
             $subject = new Subject();
             $subject->name = $data['name'];
             $subject->save();
-            session()->flash('success', 'Thêm mới khóa học thành công');
-            return redirect()->route('subjects');
+            session()->flash('success', 'Create Subject Successful');
+            return redirect()->back();
         }
         catch (\Exception $err){
-            session()->flash('error', 'Thêm mới khóa học thành công');
+            session()->flash('error', 'Create Subject Unsuccessful');
             Log::info($err->getMessage());
             return false;
         }
@@ -63,7 +65,7 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -74,7 +76,8 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subject = Subject::find($id);
+        return  view('admin.subjects.edit',['subject'=>$subject]);
     }
 
     /**
@@ -86,7 +89,20 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $data = request()->all();
+            $faculty =  Subject::find($id);
+            $faculty->name = $data['name'];
+            $faculty->save();
+            Session::flash('success', 'Update Faculty Successful');
+            return redirect()->route('subjects.index');
+        }
+        catch (\Exception $err){
+            Session::flash('error', 'Update Faculty Unsuccessful');
+            Log::info($err->getMessage());
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -97,6 +113,9 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-
+        $subject = Faculty::findOrFail($id);
+        $subject->delete();
+        Session::flash('success', 'Delete Subjects Successful');
+        return redirect()->route('subjects.index');
     }
 }

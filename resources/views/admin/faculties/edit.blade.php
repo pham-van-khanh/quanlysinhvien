@@ -5,8 +5,8 @@
 @section('content')
 
 
-    <form action="{{route('faculties.update',$faculty->id)}} " method="post" enctype="multipart/form-data">
-        @method('PUT')
+   {{Form::open(array('faculties.update' => array('FacultyController@post', $faculty->id)))}}
+{{--        @method('PUT')--}}
         <br>
         @csrf
         @include('admin.admin-alert')

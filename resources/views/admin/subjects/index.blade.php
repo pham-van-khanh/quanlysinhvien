@@ -3,13 +3,11 @@
 @section('title', 'List Subjects')
 @section('danh-muc', 'List Subjects')
 @section('content')
+    <br>
+
     <div>
+        @include('admin.admin-alert')
     </div>
-
- @include('admin.admin-alert')
-
-<br>
-
 <form action="">
     <div style="width:250px" class="input-group input-group-outline">
         <label class="form-label">Search here...</label>
@@ -48,9 +46,16 @@
                            </a>
 
                        </td>
+                       <td>
+                           {{Form::open(array('method' => 'delete','route' =>['subjects.destroy',$item->id]))}}
+                           {{ method_field('DELETE') }}
+                               <div class="form-group">
+                                   <input onclick="return confirm('Are you sure?')" type="submit" class="btn btn-warning btn-sm btnDelete" value="Delete">
+                               </div>
+                           {{Form::close()}}
+                       </td>
                    </tr>
                @endforeach
-                {{-- {!! \App\Helpers\Helpers::faculty($faculties) !!} --}}
                 </tbody>
             </table>
         </div>
