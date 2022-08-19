@@ -4,14 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubjectRequest;
-use App\Models\Faculty;
 use App\Models\Subject;
+use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class SubjectController extends Controller
 {
+    protected SubjectRepositoryInterface $subjectRepository;
+
+    public function __construct(SubjectRepositoryInterface $subjectRepository)
+    {
+        $this->subjectRepository = $subjectRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +25,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::select('subjects.*')->orderBy('id','DESC')->Paginate(5);
-          return  view('admin.subjects.index',compact('subjects'));
+        $subjects = $this->subjectRepository->getAll();
+        return view('admin.subjects.index', compact('subjects'));
     }
 
     /**
@@ -30,7 +36,8 @@ class SubjectController extends Controller
      */
     public function create()
     {
-     return view('admin.subjects.add');
+        $subject = new Subject();
+        return view('admin.subjects.form',compact('subject'));
     }
 
     /**
@@ -41,20 +48,10 @@ class SubjectController extends Controller
      */
     public function store(SubjectRequest $request)
     {
-        try {
-            $data = $request->all();
-            $subject = new Subject();
-            $subject->name = $data['name'];
-            $subject->save();
-            session()->flash('success', 'Create Subject Successful');
-            return redirect()->back();
-        }
-        catch (\Exception $err){
-            session()->flash('error', 'Create Subject Unsuccessful');
-            Log::info($err->getMessage());
-            return false;
-        }
-        return true;
+        $data = $request->all();
+        $data = $this->subjectRepository->create($data);
+        Session::flash('success', 'Create Subject Successful');
+        return redirect()->route('subjects.index');
     }
 
     /**
@@ -65,7 +62,8 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-
+        $subject = $this->subjectRepository->find($id);
+        return view('admin.subjects.form', compact('subject'));
     }
 
     /**
@@ -76,8 +74,7 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        $subject = Subject::find($id);
-        return  view('admin.subjects.edit',['subject'=>$subject]);
+
     }
 
     /**
@@ -89,20 +86,10 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-            $data = request()->all();
-            $faculty =  Subject::find($id);
-            $faculty->name = $data['name'];
-            $faculty->save();
-            Session::flash('success', 'Update Faculty Successful');
-            return redirect()->route('subjects.index');
-        }
-        catch (\Exception $err){
-            Session::flash('error', 'Update Faculty Unsuccessful');
-            Log::info($err->getMessage());
-            return false;
-        }
-        return true;
+        $data = $request->all();
+        $faculty = $this->subjectRepository->update($data, $id);
+        Session::flash('success', 'Update Subject Successful');
+        return redirect()->route('subjects.index');
     }
 
     /**
@@ -113,8 +100,7 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        $subject = Faculty::findOrFail($id);
-        $subject->delete();
+        $this->subjectRepository->delete($id);
         Session::flash('success', 'Delete Subjects Successful');
         return redirect()->route('subjects.index');
     }

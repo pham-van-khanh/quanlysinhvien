@@ -5,22 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Models\Faculty;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Repositories\Faculties\FacultyRepositoryInterface;
 use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
 {
+
+    protected FacultyRepositoryInterface $facultyRepository;
+
+    public function __construct(FacultyRepositoryInterface $facultyRepository)
+    {
+        $this->facultyRepository = $facultyRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-        $faculties = Faculty::select('faculties.*')
-        ->orderBy('id','DESC')
-        ->Paginate(5);
-     return view('admin.faculties.index',['faculties'=>$faculties]);
+    public function index()
+    {
+        $faculties = $this->facultyRepository->getAll();
+        return view('admin.faculties.index', compact('faculties'));
     }
 
     /**
@@ -30,7 +36,8 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        return view('admin.faculties.add');
+        $faculty = new Faculty();
+        return view('admin.faculties.form', compact('faculty'));
     }
 
     /**
@@ -41,20 +48,10 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-        try {
-            $data = request()->all();
-            $faculty = new Faculty();
-            $faculty->name = $data['name'];
-            $faculty->save();
-            Session::flash('success', 'Create Faculty Successful');
-            return redirect()->back();
-            }
-            catch (\Exception $err){
-                Session::flash('error', 'Create Faculty Unsuccessful');
-                Log::info($err->getMessage());
-                return false;
-            }
-            return true;
+        $data = $request->all();
+        $data = $this->facultyRepository->create($data);
+        Session::flash('success', 'Create Faculty Successful');
+        return redirect()->route('faculties.index');
     }
 
     /**
@@ -65,7 +62,9 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $faculty = $this->facultyRepository->find($id);
+        return view('admin.faculties.form', compact('faculty'));
     }
 
     /**
@@ -76,11 +75,7 @@ class FacultyController extends Controller
      */
     public function edit($id)
     {
-        $faculty = Faculty::find($id);
-        return response()->json([
-            'faculty' => $faculty,
-            'id' => $faculty->id
-        ]);
+
     }
 
     /**
@@ -90,23 +85,13 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(FacultyRequest $request, $id)
     {
-        try{
-            $data = request()->all();
-            $faculty =  Faculty::find($id);
-            $faculty->name = $data['name'];
-            $faculty->save();
-            return response()->json($faculty);
-            Session::flash('success', 'Update Faculty Successful');
-            return redirect()->route('faculties.index');
-        }
-        catch (\Exception $err){
-            Session::flash('error', 'Update Faculty Unsuccessful');
-            Log::info($err->getMessage());
-            return false;
-        }
-        return true;
+        $data = $request->all();
+        $faculty = $this->facultyRepository->update($id, $data);
+        Session::flash('success', 'Update Faculty Successful');
+        return redirect()->route('faculties.index');
     }
 
     /**
@@ -117,8 +102,7 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        $faculty = Faculty::findOrFail($id);
-        $faculty->delete();
+        $this->facultyRepository->delete($id);
         Session::flash('success', 'Delete Faculty Successful');
         return redirect()->route('faculties.index');
     }

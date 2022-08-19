@@ -3,10 +3,7 @@
 @section('title', 'List Faculty')
 @section('danh-muc', 'List Faculty')
 @section('content')
-    <div>
-        <br>
-        @include('admin.admin-alert')
-    </div>
+
     <form action="">
         <div style="width:250px" class="input-group input-group-outline">
             <label class="form-label">Search here...</label>
@@ -29,37 +26,34 @@
                     </tr>
                 </thead>
                 <tbody>
+                @foreach ($faculties as $index => $item)
+                    <tr>
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>
+                            {{ $item->name}}
+                        </td>  <td>
+                            {{ $item->created_at}}
+                        </td>
 
-
-                 {!! \App\Helpers\Helpers::faculty($faculties) !!}
+                        <td class="align-middle">
+                            <a href="{{ route('faculties.show', $item->id) }}">
+                                {{Form::submit('Edit',array('class'=>'btn btn-warning btn-sm'))}}
+                            </a>
+                            {{Form::open(array('method' => 'delete', 'route' =>['faculties.destroy', $item->id]))}}
+                            {{ method_field('DELETE') }}
+                            <div class="form-group">
+                                {{Form::submit('Del',array('class'=>'btn btn-danger btn-sm'))}}
+                            </div>
+                            {{Form::close()}}
+                        </td>
+                    </tr>
+                @endforeach
             </table>
         </div>
-        <div>{{ $faculties->links() }}</div>
-        <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Cập nhật</h5>
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-bookmark needs-validation" novalidate="">
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label>Name Faculty</label>
 
 
-                                    <input class="form-control" id="nameFaculty" name="name" type="text" required="" autocomplete="off" value="">
-                                </div>
-                            </div>
-                            <input type="hidden" name="faculty_id" id="faculty_id">
-                            <button class="btn btn-secondary" type="button" id="saveUpdateForm" onclick="saveUpdate()">Save</button>
-                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="{{asset('dist/js/js.js')}}"
 @endsection
