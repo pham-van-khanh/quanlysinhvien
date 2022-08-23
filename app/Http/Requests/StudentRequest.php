@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FacultyRequest extends FormRequest
+class StudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class FacultyRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,12 +23,8 @@ class FacultyRequest extends FormRequest
      */
     public function rules()
     {
-        $data = [
-            'name' => 'required|unique:faculties'
+        return [
+            //
         ];
-        if ($this->route('faculties')) {
-            $data['name'] = 'required|unique:faculties,id' . $this->route('faculties');
-        }
-        return $data;
     }
 }

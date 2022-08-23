@@ -11,8 +11,12 @@ $(document).ready(function() {
 function update(id) {
     console.log(id);
     $.get('students/' + id + '/edit', function (data) {
-        console.log(data);
+        // console.log(data);
         $('#nameStudent').val(data.student.name);
+        $('#phoneStudent').val(data.student.phone);
+        $('#emailStudent').val(data.student.email);
+        $('#genderStudent').val(data.student.gender);
+        $('#addressStudent').val(data.student.address);
         $('#student_id').val(data.student.id);
     })
 };

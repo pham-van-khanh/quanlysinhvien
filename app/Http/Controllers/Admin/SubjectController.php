@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class SubjectController extends Controller
 {
-    protected SubjectRepositoryInterface $subjectRepository;
+    protected $subjectRepository;
 
     public function __construct(SubjectRepositoryInterface $subjectRepository)
     {
@@ -25,7 +25,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = $this->subjectRepository->getAll();
+        $subjects = $this->subjectRepository->getSubjects();
         return view('admin.subjects.index', compact('subjects'));
     }
 
@@ -62,8 +62,7 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        $subject = $this->subjectRepository->find($id);
-        return view('admin.subjects.form', compact('subject'));
+
     }
 
     /**
@@ -74,7 +73,8 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-
+        $subject = $this->subjectRepository->find($id);
+        return view('admin.subjects.form', compact('subject'));
     }
 
     /**
@@ -87,8 +87,8 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $faculty = $this->subjectRepository->update($data, $id);
-        Session::flash('success', 'Update Subject Successful');
+        $subject = $this->subjectRepository->update($id, $data);
+        Session::flash('success', 'Update Successful');
         return redirect()->route('subjects.index');
     }
 

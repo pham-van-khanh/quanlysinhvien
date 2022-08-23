@@ -16,10 +16,10 @@
             <table class="table align-items-center mb-0">
                 <thead>
                     <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stt</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time Create</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Stt</th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name</th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time Create</th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7 ps-2">
                             <a href="{{ route('faculties.create') }}" class="btn btn-info btn-sm"> Add Faculty </a>
                         </th>
                         <th></th>
@@ -28,23 +28,24 @@
                 <tbody>
                 @foreach ($faculties as $index => $item)
                     <tr>
-                        <td>
+                        <td class="text-center">
                             {{$index+1}}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {{ $item->name}}
-                        </td>  <td>
+                        </td>
+                        <td class="text-center">
                             {{ $item->created_at}}
                         </td>
 
-                        <td class="align-middle">
-                            <a href="{{ route('faculties.show', $item->id) }}">
-                                {{Form::submit('Edit',array('class'=>'btn btn-warning btn-sm'))}}
+                        <td class="text-center">
+                            <a href="{{ route('faculties.edit', $item->id) }}">
+                                <i class="fa fa-edit"></i>
                             </a>
-                            {{Form::open(array('method' => 'delete', 'route' =>['faculties.destroy', $item->id]))}}
+                            {{Form::open(array('method' => 'delete', 'route' => ['faculties.destroy', $item->id]))}}
                             {{ method_field('DELETE') }}
                             <div class="form-group">
-                                {{Form::submit('Del',array('class'=>'btn btn-danger btn-sm'))}}
+                                {{Form::submit('Del', array('class'=>'btn btn-danger btn-sm'))}}
                             </div>
                             {{Form::close()}}
                         </td>
@@ -52,9 +53,8 @@
                 @endforeach
             </table>
         </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="{{asset('dist/js/js.js')}}"
+        <div>
+            {{$faculties->links()}}
+        </div>
 @endsection
 

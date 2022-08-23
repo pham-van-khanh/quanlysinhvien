@@ -26,16 +26,27 @@ abstract class BaseRepository implements EloquentRepositoryInterface
         );
     }
 
+    /**
+     * Set model
+     */
+    public function newModel()
+    {
+        return new $this->model;
+    }
+
+    public function pluck($key, $value)
+    {
+        return $this->model->pluck($value, $key);
+    }
+
     public function getAll()
     {
-        return $this->model->orderBy('updated_at','desc')->get();
+        return $this->model->all();
     }
 
     public function find($id)
     {
-        $result = $this->model->find($id);
-
-        return $result;
+        return $this->model->find($id);
     }
 
     public function create($attributes = [])
@@ -65,5 +76,6 @@ abstract class BaseRepository implements EloquentRepositoryInterface
 
         return false;
     }
+
 
 }

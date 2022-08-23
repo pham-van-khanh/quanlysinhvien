@@ -39,4 +39,7 @@ interface EloquentRepositoryInterface
      */
     public function delete($id);
 
+    public function newModel();
+
+    public function pluck($key, $value);
 }

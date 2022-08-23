@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Faculties;
 
-use App\Models\Faculty;
 use App\Repositories\BaseRepository;
-use Illuminate\Support\Collection;
 
 class   FacultyRepository extends BaseRepository implements FacultyRepositoryInterface
 {
@@ -21,8 +19,14 @@ class   FacultyRepository extends BaseRepository implements FacultyRepositoryInt
     /**
      * @return mixed
      */
-    public function getFuclty()
+    public function facultyList()
     {
-        return $this->model->select('id','name')->take(5)->get();
+        return $this->model->select('id', 'name', 'updated_at', 'created_at')
+            ->orderBy('updated_at', 'DESC')->paginate(2);
     }
+
+    /**
+     * @return mixed
+     */
+
 }

@@ -27,7 +27,7 @@
                             </td>
 
                             <td class="align-middle">
-                                <a href="{{ route('subjects.show', $item->id) }}">
+                                <a href="{{ route('subjects.edit', $item->id) }}">
                                     {{ Form::submit('Edit', ['class' => 'btn btn-warning btn-sm']) }}
                                 </a>
                                 {{ Form::open(['method' => 'delete', 'route' => ['subjects.destroy', $item->id]]) }}

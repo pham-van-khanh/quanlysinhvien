@@ -7,5 +7,8 @@ use App\Repositories\EloquentRepositoryInterface;
 interface FacultyRepositoryInterface extends EloquentRepositoryInterface
 {
 
-    public function getFuclty();
+    public function facultyList();
+
+    public function getModel();
+
 }

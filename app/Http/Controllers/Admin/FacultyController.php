@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
-use App\Models\Faculty;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
 {
 
-    protected FacultyRepositoryInterface $facultyRepository;
+    protected $facultyRepository;
 
     public function __construct(FacultyRepositoryInterface $facultyRepository)
     {
@@ -25,7 +25,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $faculties = $this->facultyRepository->getAll();
+        $faculties = $this->facultyRepository->facultyList();
         return view('admin.faculties.index', compact('faculties'));
     }
 
@@ -36,7 +36,7 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        $faculty = new Faculty();
+        $faculty = $this->facultyRepository->newModel();
         return view('admin.faculties.form', compact('faculty'));
     }
 
@@ -48,8 +48,8 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-        $data = $request->all();
-        $data = $this->facultyRepository->create($data);
+
+        $data = $this->facultyRepository->create($request->all());
         Session::flash('success', 'Create Faculty Successful');
         return redirect()->route('faculties.index');
     }
@@ -63,8 +63,7 @@ class FacultyController extends Controller
     public function show($id)
     {
 
-        $faculty = $this->facultyRepository->find($id);
-        return view('admin.faculties.form', compact('faculty'));
+
     }
 
     /**
@@ -75,7 +74,8 @@ class FacultyController extends Controller
      */
     public function edit($id)
     {
-
+        $faculty = $this->facultyRepository->find($id);
+        return view('admin.faculties.form', compact('faculty'));
     }
 
     /**
@@ -90,7 +90,7 @@ class FacultyController extends Controller
     {
         $data = $request->all();
         $faculty = $this->facultyRepository->update($id, $data);
-        Session::flash('success', 'Update Faculty Successful');
+        Session::flash('success', 'Update Successful');
         return redirect()->route('faculties.index');
     }
 

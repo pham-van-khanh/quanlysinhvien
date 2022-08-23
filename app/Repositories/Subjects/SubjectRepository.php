@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Subjects;
 
-use App\Models\Faculty;
 use App\Repositories\BaseRepository;
-use Illuminate\Support\Collection;
 
 class SubjectRepository extends BaseRepository implements SubjectRepositoryInterface
 {
@@ -13,16 +11,15 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
      */
     public function getModel()
     {
-        return \App\Models\Faculty::class;
+        return \App\Models\Subject::class;
     }
-
-
 
     /**
      * @return mixed
      */
-    public function getStudent()
+    public function getSubjects()
     {
-        // TODO: Implement getStudent() method.
+        return $this->model->select('id', 'name', 'updated_at', 'created_at')
+            ->orderBy('updated_at', 'DESC')->paginate(2);
     }
 }
