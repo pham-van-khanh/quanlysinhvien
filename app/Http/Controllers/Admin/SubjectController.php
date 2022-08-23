@@ -36,7 +36,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        $subject = new Subject();
+        $subject = $this->subjectRepository->newModel();
         return view('admin.subjects.form',compact('subject'));
     }
 

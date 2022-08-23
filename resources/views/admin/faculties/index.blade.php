@@ -42,12 +42,12 @@
                             <a href="{{ route('faculties.edit', $item->id) }}">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            {{Form::open(array('method' => 'delete', 'route' => ['faculties.destroy', $item->id]))}}
+                            {{ Form::open(array('method' => 'delete', 'route' => ['faculties.destroy', $item->id])) }}
                             {{ method_field('DELETE') }}
                             <div class="form-group">
-                                {{Form::submit('Del', array('class'=>'btn btn-danger btn-sm'))}}
+                                {{ Form::submit('Del', array('class'=>'btn btn-danger btn-sm')) }}
                             </div>
-                            {{Form::close()}}
+                            {{ Form::close() }}
                         </td>
                     </tr>
                 @endforeach
