@@ -21,3 +21,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('subjects',SubjectController::class);
     Route::resource('students',StudentController::class);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
