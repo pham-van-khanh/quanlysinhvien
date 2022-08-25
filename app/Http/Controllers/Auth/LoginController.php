@@ -25,6 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
+//    protected $redirectTo = '/admin/faculties';
     protected $redirectTo = '/home';
 
     /**
@@ -34,6 +35,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+//        $this->middleware('auth.Admin');
         $this->middleware('guest')->except('logout');
     }
 }
