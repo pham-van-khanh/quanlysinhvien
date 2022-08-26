@@ -1,29 +1,26 @@
 @extends('admin.admin-master')
 @section('content-title', 'List Faculty')
 @section('title', 'List Faculty')
-@section('danh-muc', 'List Faculty')
 @section('content')
-
-    <form action="">
-        <div style="width:250px" class="input-group input-group-outline">
-            <label class="form-label">Search here...</label>
-            <input type="text" name="search" class="form-control">
-        </div>
-
-    </form>
+    <div class="col-2 flex-md-grow-1">
+        @can('create')
+            <a href="{{ route('faculties.create') }}"
+               class="btn btn-info btn-sm"> Add Faculty </a>
+        @endcan
+    </div>
     <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
                 <thead>
-                    <tr>
-                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Stt</th>
-                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name</th>
-                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time Create</th>
-                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7 ps-2">
-                            <a href="{{ route('faculties.create') }}" class="btn btn-info btn-sm"> Add Faculty </a>
-                        </th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Stt</th>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time
+                        Create
+                    </th>
+                    <th></th>
+                </tr>
                 </thead>
                 <tbody>
                 @foreach ($faculties as $index => $item)
@@ -39,22 +36,38 @@
                         </td>
 
                         <td class="text-center">
-                            <a href="{{ route('faculties.edit', $item->id) }}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            {{ Form::open(array('method' => 'delete', 'route' => ['faculties.destroy', $item->id])) }}
-                            {{ method_field('DELETE') }}
-                            <div class="form-group">
-                                {{ Form::submit('Del', array('class'=>'btn btn-danger btn-sm')) }}
-                            </div>
-                            {{ Form::close() }}
+                            @can('edit')
+                                <a style="color: darksalmon" href="{{ route('faculties.edit', $item->id) }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            @endcan
+                            @can('delete')
+                                <a style="color: red" href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}" class="btnDelete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
             </table>
+            <form action="" method="POST" id="form-delete">
+                {{ method_field('DELETE') }}
+                {!! csrf_field() !!}
+            </form>
         </div>
         <div>
             {{$faculties->links()}}
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script>
+            $('.btnDelete').click(function (e) {
+                e.preventDefault();
+                var href = $(this).attr('href');
+                $('#form-delete').attr('action', href);
+                if (confirm('Are you sure?')) {
+                    $('#form-delete').submit();
+                }
+            });
+        </script>
+    </div>
 @endsection
-

@@ -16,5 +16,11 @@
         </div>
     </div>
     {{ Form::submit('Submit', ['class'=>'btn btn-success'] )}}
+    @if($faculty->id)
+        {{ Form::model($faculty, array('route' => ['faculties.destroy', $faculty->id], 'method' => 'DELETE'))}}
+        {{ Form::submit('Delete', ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"])}}
+        {{ Form::close() }}
+    @endif
+    {{ Form::close() }}
     {{ Form::close() }}
 @endsection

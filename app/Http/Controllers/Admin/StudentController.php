@@ -36,9 +36,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $student = new Student();
+        $student = $this->studentRepository->newModel();
         $faculties = Faculty::all();
-        return view('admin.students.form',compact('student','faculties'));
+        return view('admin.students.form', compact('student','faculties'));
     }
 
     /**
@@ -57,7 +57,7 @@ class StudentController extends Controller
         }
         $data = $request->all();
         $data['avatar'] = $request->avatar;
-
+        $data['user_id'] = 1;
         $student = $this->studentRepository->create($data);
         Session::flash('success', 'Create Student Successful');
         return redirect()->route('students.index');

@@ -4,13 +4,9 @@
 @section('danh-muc', 'List Students')
 @section('content')
 
-    <form action="">
-        <div style="width:250px" class="input-group input-group-outline">
-            <label class="form-label">Search here...</label>
-            <input type="text" name="search" class="form-control">
-        </div>
-
-    </form>
+   <div class="col-2">
+       <a href="{{ route('users.create') }}" class="btn btn-info btn-sm"> Add Users </a>
+   </div>
     <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -18,19 +14,15 @@
                 <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stt</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name Faculty</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Avatar</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time Create</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                        <a href="{{ route('students.create') }}" class="btn btn-info btn-sm"> Add Student </a>
-                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
+
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
 
-                @foreach ($students as $index => $item)
+                @foreach ($data as $index => $item)
                     <tr>
                         <td>
                             {{ $index + 1 }}
@@ -39,26 +31,22 @@
                             {{ $item->name }}
                         </td>
                         <td>
-                            {{ $item->faculty->name }}
-                        </td>
-                        <td>
-                            <img src="{{ asset($item->avatar) }}" class="width">
-                        </td>
-                        <td>
-                            {{ $item->phone }}
-                        </td>
-                        <td>
                             {{ $item->created_at }}
                         </td>
-                      @can('edit')
-                            <td class="align-middle">
-                                <a onclick="update({{ $item->id }})" data-bs-toggle="modal"
-                                   data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
-                                    {{ Form::submit('Edit', ['class' => 'btn btn-warning btn-sm']) }}
-                                </a>
-                            </td>
-                        @endcan
-
+                        <td>
+                            @if(!empty($item->getRoleNames()))
+                                @foreach($item->getRoleNames() as $v)
+                                    <label class="text-sm-center">{{ $v }}</label>
+                                @endforeach
+                            @endif
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="{{ route('users.show', $item->id) }}">Show</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $item->id) }}">Edit</a>
+                            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $item->id], 'style'=>'display:inline']) !!}
+                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::close() !!}
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -69,9 +57,10 @@
             }
         </style>
         <div>
-            {{ $students->links() }}
+            {{ $data->links() }}
         </div>
-        <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;"
+             aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -84,26 +73,27 @@
                                 <div class="form-group col-md-12">
                                     <label>Name Student</label>
                                     <input class="form-control" id="nameStudent" name="name" type="text"
-                                        required="" autocomplete="off" value="">
+                                           required="" autocomplete="off" value="">
                                     <label>Phone Student</label>
                                     <input class="form-control" id="phoneStudent" name="phone" type="text"
-                                        required="" autocomplete="off" value="">
+                                           required="" autocomplete="off" value="">
                                     <label>Address Student</label>
                                     <input class="form-control" id="addressStudent" name="address" type="text"
-                                        required="" autocomplete="off" value="">
-                                    <label >Gender Student</label>
+                                           required="" autocomplete="off" value="">
+                                    <label>Gender Student</label>
                                     <input class="form-control" id="genderStudent" name="gender" value type="text"
-                                        required="" autocomplete="off" value="1">
+                                           required="" autocomplete="off" value="1">
                                     <label>Email Student</label>
                                     <input class="form-control" id="emailStudent" name="email" type="text"
-                                        required="" autocomplete="off" value="">
+                                           required="" autocomplete="off" value="">
 
                                 </div>
                             </div>
                             <input type="hidden" name="student_id" id="student_id">
                             <br>
                             <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" id="saveUpdate"
-                                onclick="saveUpdate()">Save</button>
+                                    onclick="saveUpdate()">Save
+                            </button>
                             <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
                         </form>
                     </div>
@@ -111,4 +101,5 @@
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="{{ asset('dist/js/js.js') }}" @endsection
+        <script src="{{ asset('dist/js/js.js') }}"
+@endsection

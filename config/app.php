@@ -182,6 +182,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 //        Illuminate\Http\HtmlServicesProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
 
         /*

@@ -73,75 +73,90 @@
                         <span class="nav-link-text ms-1">Faculty</span>
                     </a>
                 </li>
+                @can('create')
                 <li class="nav-item">
                     <a class="nav-link text-white " href="{{ route('subjects.index') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">table_view</i>
                         </div>
-                        <span class="nav-link-text ms-1">Subjects</span>
+                        <span class="nav-link-text ms-1">Subject</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('students.index') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">receipt_long</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Students</span>
-                    </a>
-                </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('product') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">receipt_long</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Product</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('users') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">person</i>
-                        </div>
-                        <span class="nav-link-text ms-1">User</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('customers') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">notifications</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Đơn hàng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('cmt') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-clock me-1"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Comments</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('contact-list') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-envelope"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Contact</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="sidenav-footer position-absolute w-100 bottom-0 ">
-            <div class="mx-3">
-                <a class="btn bg-gradient-primary mt-4 w-100" href="{{ route('logOut') }}" type="submit">Log Out</a>
-            </div>
+                    <li class="nav-item">
+                        <a class="nav-link text-white " href="{{ route('students.index') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">receipt_long</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Student</span>
+                        </a>
+                    </li>
 
-        </div> --}}
+                    <li class="nav-item">
+                        <a class="nav-link text-white " href="{{ route('users.index') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">person</i>
+                            </div>
+                            <span class="nav-link-text ms-1">User</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white " href="{{ route('roles.index') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">notifications</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Role</span>
+                        </a>
+                    </li>
+        @endcan
+        {{-- <li class="nav-item">
+            <a class="nav-link text-white " href="{{ route('product') }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">receipt_long</i>
+                </div>
+                <span class="nav-link-text ms-1">Product</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white " href="{{ route('users') }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">person</i>
+                </div>
+                <span class="nav-link-text ms-1">User</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white " href="{{ route('customers') }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">notifications</i>
+                </div>
+                <span class="nav-link-text ms-1">Đơn hàng</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white " href="{{ route('cmt') }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="fa fa-clock me-1"></i>
+                </div>
+                <span class="nav-link-text ms-1">Comments</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white " href="{{ route('contact-list') }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <span class="nav-link-text ms-1">Contact</span>
+            </a>
+        </li>
+    </ul>
+</div> --}}
+
     </aside>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
-            navbar-scroll="true">
+             navbar-scroll="true">
             <div class="container-fluid py-1 px-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
@@ -160,15 +175,21 @@
                         </div>
                     </div>
                     <ul class="navbar-nav  justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none"> Hi
-
-                                    {{ Auth::check() ? Auth::user()->name : '' }}
-
-                                </span>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
                             </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -279,10 +300,7 @@
             {{-- ========================== ADD LAYOUT =========================== --}}
             <div class="row">
                 <div class="card">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        </div>
-                    </div>
+
                     <div>
                         <br>
                         @include('admin.admin-alert')
@@ -299,44 +317,7 @@
             </div>
             {{-- ========================== ADD LAYOUT =========================== --}}
             {{-- ========================== ADD LAYOUT =========================== --}}
-            <footer class="footer py-4  ">
-                <div class="container-fluid">
-                    <div class="row align-items-center justify-content-lg-between">
-                        <div class="col-lg-6 mb-lg-0 mb-4">
-                            <div class="copyright text-center text-sm text-muted text-lg-start">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script>,
-                                made with <i class="fa fa-heart"></i> by
-                                <a href="https://www.creative-tim.com" class="font-weight-bold"
-                                    target="_blank">Creative Tim</a>
-                                for a better web.
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com" class="nav-link text-muted"
-                                        target="_blank">Creative Tim</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
-                                        target="_blank">About Us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
-                                        target="_blank">Blog</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                                        target="_blank">License</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+
         </div>
     </main>
     <div class="fixed-plugin">
