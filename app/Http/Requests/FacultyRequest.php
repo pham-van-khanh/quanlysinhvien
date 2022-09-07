@@ -23,12 +23,13 @@ class FacultyRequest extends FormRequest
      */
     public function rules()
     {
-        $data = [
-            'name' => 'required|unique:faculties'
-        ];
-        if ($this->route('faculties')) {
-            $data['name'] = 'required|unique:faculties,id' . $this->route('faculties');
+        if ($this->route('faculty')) {
+            return [
+                'name' => 'required|min:6|max:80|unique:faculties,name,' . $this->route('faculty'),
+            ];
         }
-        return $data;
+        return [
+            'name' => 'required|unique:faculties|min:6|max:80',
+        ];
     }
 }

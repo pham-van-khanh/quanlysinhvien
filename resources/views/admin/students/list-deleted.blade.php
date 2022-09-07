@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($faculties as $index => $item)
+                @foreach ($student as $index => $item)
                     <tr>
                         <td class="text-center">
                             {{$index+1}}
@@ -56,7 +56,7 @@
             </form>
         </div>
         <div>
-            {{$faculties->links()}}
+            {{$student->links()}}
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script>

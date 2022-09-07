@@ -17,6 +17,7 @@ function update(id) {
         $('#emailStudent').val(data.student.email);
         $('#addressStudent').val(data.student.address);
         $('#genderStudent').val(data.student.gender);
+        $('#birthdayStudent').val(data.student.birthday);
         $('#student_id').val(data.student.id);
     })
 };
@@ -31,21 +32,21 @@ function saveUpdate() {
     var email = $('#emailStudent').val();
     var address = $('#addressStudent').val();
     var gender = $('#genderStudent').val();
+    var faculty = $('#genderStudent').val();
     var id = $('#student_id').val();
 
     var url = '/admin/students/'
     $.ajax({
-        url: '/admin/students/' + id ,
-        type: "PUT",
+        url: '/admin/students/' + id, type: "PUT",
         data: {
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             id: id,
             name: name,
             phone: phone,
             email: email,
             address: address,
             gender: gender,
-        },
-        dataType: 'json',
+        }, dataType: 'json',
 
         success: function (data) {
             $('#edit-bookmark').removeClass('show');
@@ -53,7 +54,7 @@ function saveUpdate() {
             $('body').removeAttr("style");
             $('body').removeClass('modal-open');
             // $('#id ' + data.id + ' td:nth-child(0)').html(data.name);
-            $('#id'+data.id).find('td:eq(1)').text(data.name);
+            $('#id' + data.id).find('td:eq(1)').text(data.name);
             $('body').removeAttr('data-bs-padding-right');
         }
 

@@ -4,5 +4,7 @@ namespace App\Repositories\Subjects;
 
 interface SubjectRepositoryInterface
 {
-    public function getSubjects();
+    public function subjectList();
+
+    public function getModel();
 }

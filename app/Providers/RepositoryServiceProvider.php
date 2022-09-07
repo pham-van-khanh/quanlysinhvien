@@ -10,6 +10,8 @@ use App\Repositories\Students\StudentRepository;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepository;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
+use App\Repositories\Users\UserRepository;
+use App\Repositories\Users\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -25,6 +27,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FacultyRepositoryInterface::class, FacultyRepository::class);
         $this->app->bind(SubjectRepositoryInterface::class, SubjectRepository::class);
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
     /**
      * Bootstrap services.

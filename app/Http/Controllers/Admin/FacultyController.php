@@ -16,6 +16,7 @@ class FacultyController extends Controller
     public function __construct(FacultyRepositoryInterface $facultyRepository)
     {
         $this->facultyRepository = $facultyRepository;
+
     }
 
     /**
@@ -76,6 +77,7 @@ class FacultyController extends Controller
     {
         $faculty = $this->facultyRepository->find($id);
         return view('admin.faculties.form', compact('faculty'));
+
     }
 
     /**

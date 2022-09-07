@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,18 +27,24 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
-Route::group(['middleware' => ['role:admin']], function () {
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('faculties', FacultyController::class);
     Route::resource('subjects', SubjectController::class);
     Route::resource('students', StudentController::class);
 });
-Route::middleware('permission:list')->group(function () {
+Route::middleware(['auth', 'permission:list'])->group(function () {
     Route::resource('faculties', FacultyController::class)->only('index');
+    Route::resource('subjects', SubjectController::class)->only('index');
 //    Route::resource('students/{students}', StudentController::class)->only(['edit' => 'update']);
 });
 
+Route::get('information/{student}', [InformationController::class, 'index'])->name('information');
+Route::get('student/subcribe/{subject}', [StudentController::class, 'subcribe'])->name('subcribe');
+Route::get('students/list-student-deleted', [StudentController::class, 'listDeleted'])
+    ->name('student-list-deleted');
+Route::get('student/restore/{student}', [StudentController::class, 'restore'])->name('student-restore');
 
 Route::get('client', function () {
     return view('layouts.client');

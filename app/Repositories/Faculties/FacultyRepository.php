@@ -7,7 +7,6 @@ use App\Repositories\BaseRepository;
 class   FacultyRepository extends BaseRepository implements FacultyRepositoryInterface
 {
 
-
     /**
      * @return mixed
      */
@@ -24,9 +23,4 @@ class   FacultyRepository extends BaseRepository implements FacultyRepositoryInt
         return $this->model->select('id', 'name', 'updated_at', 'created_at')
             ->orderBy('updated_at', 'DESC')->paginate(4);
     }
-
-    /**
-     * @return mixed
-     */
-
 }

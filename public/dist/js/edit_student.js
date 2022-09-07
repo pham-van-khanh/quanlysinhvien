@@ -1,6 +1,4 @@
-
-
-$(document).ready(function() {
+$(document).ready(function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -9,32 +7,35 @@ $(document).ready(function() {
 });
 
 function update(id) {
-    console.log(id);
     $.get('students/' + id + '/edit', function (data) {
-        // console.log(data);
+        console.log(data);
         $('#nameStudent').val(data.student.name);
+        $('#faculty_id').val(data.student.faculty_id);
         $('#phoneStudent').val(data.student.phone);
         $('#emailStudent').val(data.student.email);
-        $('#genderStudent').val(data.student.gender);
         $('#addressStudent').val(data.student.address);
+        $('#genderStudent').val(data.student.gender);
+        $('#birthdayStudent').val(data.student.birthday);
         $('#student_id').val(data.student.id);
     })
 };
 
 var id = $('#student_id').val()
-$('#saveUpdateForm').on('click', function(id) {
+$('#saveUpdateForm').on('click', function (id) {
     saveUpdate(id);
 });
+
 function saveUpdate() {
     var name = $('#nameStudent').val();
     var phone = $('#phoneStudent').val();
     var email = $('#emailStudent').val();
     var address = $('#addressStudent').val();
     var gender = $('#genderStudent').val();
+    var birthday = $('#birthdayStudent').val();
+    var faculty_id = $('#faculty_id').val();
     var id = $('#student_id').val();
-    var url = '/admin/students/'
     $.ajax({
-        url: "/admin/students/" + id,
+        url: 'students/' + id,
         type: "PUT",
         data: {
             id: id,
@@ -42,16 +43,17 @@ function saveUpdate() {
             phone: phone,
             email: email,
             address: address,
+            birthday: birthday,
             gender: gender,
+            faculty_id: faculty_id
         },
         dataType: 'json',
         success: function (data) {
             $('#edit-bookmark').removeClass('show');
             $('#edit-bookmark').css('padding-right', ' ');
             $('body').removeAttr("style");
-            $('body').removeClass('modal-open');
-            // $('#id ' + data.id + ' td:nth-child(0)').html(data.name);
-            $('#id'+data.id).find('td:eq(1)').text(data.name);
+            $('body').removeClass("modal-open");
+            $('#name' + data.student.id).find("td:eq(0)").text(data.student.name);
             $('body').removeAttr('data-bs-padding-right');
         }
     })

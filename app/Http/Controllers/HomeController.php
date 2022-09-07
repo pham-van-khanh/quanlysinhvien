@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect()->route('faculties.index');
+        if (Auth::user()->id == 1) {
+            return redirect()->route('faculties.index');
+        }
+        return redirect()->route('information', Auth::user()->id);
     }
 }

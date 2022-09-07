@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubjectRequest;
-use App\Models\Subject;
+use App\Models\Student;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SubjectController extends Controller
@@ -25,8 +26,18 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = $this->subjectRepository->getSubjects();
-        return view('admin.subjects.index', compact('subjects'));
+        $subjects = $this->subjectRepository->subjectList()->Paginate(5);
+        if (Auth::user()->roles[0]->name == 'admin') {
+            return view('admin.subjects.index', compact('subjects'));
+        }
+        $student = Student::where('user_id', Auth::id())->first();
+        $studentSubject = $student->subjects;
+
+        if (!isset($studentSubject[0])) {
+            $getMark = 1;
+            return view('admin.subjects.index', compact('subjects', 'getMark', 'student'));
+        }
+        return view('admin.subjects.index', compact('subjects', 'studentSubject', 'student'));
     }
 
     /**
@@ -37,7 +48,7 @@ class SubjectController extends Controller
     public function create()
     {
         $subject = $this->subjectRepository->newModel();
-        return view('admin.subjects.form',compact('subject'));
+        return view('admin.subjects.form', compact('subject'));
     }
 
     /**
@@ -100,6 +111,10 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
+        $subject = $this->subjectRepository->find($id);
+        if ($subject->students()->count('*')) {
+            Session::flash('error', 'Cannot Delete Subjects Successful');
+        }
         $this->subjectRepository->delete($id);
         Session::flash('success', 'Delete Subjects Successful');
         return redirect()->route('subjects.index');
