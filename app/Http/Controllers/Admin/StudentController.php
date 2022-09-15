@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\StudentExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
-use App\Models\Faculty;
 use App\Models\Student;
 use App\Repositories\Faculties\FacultyRepository;
 use App\Repositories\Students\StudentRepository;
@@ -14,23 +14,32 @@ use App\Repositories\Users\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 
 class StudentController extends Controller
 {
-    protected $studentRepository, $userRepository, $subjectRepository, $facultyRepository;
+    protected $studentRepository,
+        $userRepository,
+        $subjectRepository,
+        $facultyRepository,
+        $page;
 
-
-    public function __construct(StudentRepository $studentRepository, FacultyRepository $facultyRepository, UserRepository $userRepository, SubjectRepository $subjectRepository)
+    public function __construct(StudentRepository $studentRepository,
+                                FacultyRepository $facultyRepository,
+                                UserRepository    $userRepository,
+                                SubjectRepository $subjectRepository,
+                                Config            $page)
     {
         $this->studentRepository = $studentRepository;
         $this->userRepository = $userRepository;
         $this->facultyRepository = $facultyRepository;
         $this->subjectRepository = $subjectRepository;
-
+        $this->page = $page;
     }
 
     /**
@@ -40,9 +49,12 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        $students = $this->subjectRepository->relationship(['student']);
+        $subjects = $this->subjectRepository->count();
         $students = $this->studentRepository->search($request->all());
+        # lấy ra faculty *faculties* và pluck từ id thành name
         $faculties = $this->facultyRepository->pluck('name', 'id');
-        return view('admin.students.index', compact('students', 'faculties'));
+        return view('admin.students.index', compact('students', 'faculties', 'subjects', 'students'));
     }
 
     /**
@@ -77,7 +89,7 @@ class StudentController extends Controller
         $student['name'] = $user->name;
         $student['email'] = $user->email;
         $student['faculty_id'] = $request['faculty_id'];
-        $student['avatar'] = 'images/students/Phạm Văn Khánh_T5wx0WCn236nh58fHlZBAyqaR1SPlv4bduoIchwk.png';
+        $student['avatar'] = null;
         $student['phone'] = $request['phone'];
         $student['birthday'] = $dt->toDateString();
         $student['gender'] = $request['gender'];
@@ -152,18 +164,27 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
-    public function listDeleted()
+    public function getListDeleted()
     {
-        $student = Student::all();
-        dd($student);
+        $student = $this->studentRepository->getStudentDeleted();
+        return view('admin.students.list-deleted', compact('student'));
     }
 
     public function restore($id)
     {
-        $model = Student::withTrashed()->find($id);
+        $model = $this->studentRepository::withTrashed()->find($id);
         $model->restore();
         Session::flash('success', 'Restore Student Successful');
         return redirect()->route('students.index');
+    }
+
+    public function resgistation(Request $request)
+    {
+        $students = $this->studentRepository->newModel();
+        $studentId = $this->studentRepository->getStudentById();
+        $students->subjects()->attach($request->subject_id, ['student_id' => $studentId]);
+        Session::flash('success', 'Resgiste Subject Successful');
+        return redirect()->route('subjects.index');
     }
 
     public function subcribe($id)
@@ -176,45 +197,27 @@ class StudentController extends Controller
         return redirect()->route('subjects.index');
     }
 
-    public function search_old(Request $request)
+    public function updatePoint($id)
     {
-        $date = date('Y');
-        $formOld = $request['fromOld'];
-        $toOld = $request['toOld'];
-        if ($formOld > $toOld) {
-            $formOld = $request['toOld'];
-            $toOld = $request['fromOld'];
+        $student = $this->studentRepository->find($id);
+        $students = $student->subjects;
+        $mark = '';
+        foreach ($students as $param) {
+            $mark .= $param->pivot->mark;
         }
-        // dd($request);
-        $stu = Student::all();
-        if ($formOld == '' && $toOld == '') {
-            return redirect()->route('students.index');
-        } elseif ($formOld == '' | $toOld == '') {
-            foreach ($stu as $item) {
-                $bits = explode('-', $item->birthday);
-                $age = $date - $bits[0];
-                if ($age == $toOld) {
-                    $_SESSION['students'] = $item;
-                    $students[] = $_SESSION['students'];
-                } else {
-                    $students = [];
-                }
-            }
-            return view('admin.students.index', compact('students'));
-        } else {
-            foreach ($stu as $item) {
-                $bits = explode('-', $item->birthday);
-                $age = $date - $bits[0];
+//        dd($mark);
+        $html = '';
+        foreach ($students as $key) {
+            $html .= '<option>' . $key->name . '</option>';
+        }
+        //    "<select id='selectbox' class='form-control'>" + "<option value='##'>" + 'Subject'  +"</option>" + "</select>"
+        return view('admin.students.update-mark', compact('students', 'html', 'mark'));
+    }
 
-                if ($formOld <= $age && $age <= $toOld) {
-                    $_SESSION['students'] = $item;
-                    $students[] = $_SESSION['students'];
-                } else {
-                    $students = [];
-                }
-            }
-            return view('admin.students.index', compact('students'));
-        }
+    public function export($id)
+    {
+        return Excel::download(new StudentExport($id), 'point-student.xlsx');
+        return Excel::store(new StudentExport, 'point-student.xlsx', 'disk-name');
     }
 
 }

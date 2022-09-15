@@ -77,5 +77,18 @@ abstract class BaseRepository implements EloquentRepositoryInterface
         return false;
     }
 
+    public function relationship($attributes = [])
+    {
+        return $this->model->with($attributes);
+    }
 
+    public function page($number)
+    {
+        return $this->model->paginate($number);
+    }
+
+    public function count()
+    {
+        return $this->model->count();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadFileRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,24 @@ class InformationController extends Controller
         return view('auth.information', compact('students'));
     }
 
+    public function uploadImage(UploadFileRequest $request, $student)
+    {
+        $student = Student::find($student);
+        $student->fill($request->all());
+        if ($student) {
+            if ($student->avatar != null) {
+                if ($request->hasFile('avatar')) {
+                    $image = $request->avatar;
+                    $imageName = $image->hashName();
+                    $imageName = $request->name . '_' . $imageName;
+                    $student->avatar = $image->storeAs('images/users', $imageName);
+                }
+            }
+        }
+        $student->save();
+        return redirect()->back();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +45,7 @@ class InformationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,9 +54,10 @@ class InformationController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UploadFileRequest $request)
     {
-        //
+
+
     }
 
     /**
@@ -71,7 +91,7 @@ class InformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

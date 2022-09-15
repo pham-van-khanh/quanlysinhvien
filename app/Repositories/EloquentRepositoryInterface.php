@@ -42,4 +42,12 @@ interface EloquentRepositoryInterface
     public function newModel();
 
     public function pluck($key, $value);
+
+    public function relationship($attributes = []);
+
+    public function page($number);
+
+    public function count();
+
+
 }

@@ -4,7 +4,6 @@
 @section('content')
     <div class="container">
         <form action="{{route('students.index')}}" method="get">
-            @csrf
             <div class="row">
                 <div class="col-sm-3">
                     <label class="form-label" for="form3Example1">Age From</label>
@@ -20,7 +19,6 @@
                     </button>
                 </div>
             </div>
-
         </form>
     </div>
     <div class="col-2 flex-md-grow-1">
@@ -37,22 +35,23 @@
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
                         Stt
                     </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Name
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+                    </th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        Avatar
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Name
                         Faculty
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Avatar
+                        Learned
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Phone
-                        Number
+                        Update Point
                     </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Time
-                        Create
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">AVG
+                        Point
                     </th>
-                    <th></th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
                         <a href="{{ route('student-list-deleted') }}"
                            class="btn btn-secondary btn-sm"> Deleted Student </a>
@@ -65,8 +64,11 @@
                         <td id="id" class="text-center">
                             {{ $index + 1 }}
                         </td>
-                        <td id="name" class="text-center">
+                        <td id="name">
                             {{ $item->name }}
+                        </td>
+                        <td class="text-center">
+                            <img src="{{ asset($item->avatar) }}" class="width">
                         </td>
                         <td class="text-center">
                             @if(isset($item->faculty))
@@ -76,32 +78,56 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <img src="{{ asset($item->avatar) }}" class="width">
+                            {{ $item->subjects->count() .'/'. $subjects }}
                         </td>
                         <td class="text-center">
-                            {{ $item->phone }}
+                            <a class="gradient-button gradient-button-3"
+                               href="{{ route('updatePoint', $item->id) }}">
+                                <i class="fa fa-arrow-up text-white"></i>
+                            </a>
                         </td>
                         <td class="text-center">
-                            {{ $item->created_at }}
+                            <b>
+                                                                {{$item->subjects->avg('pivot.mark')}}
+{{--                                @foreach($item->subjects as $getMark)--}}
+{{--                                    @dump($getMark->pivot->mark)--}}
+{{--                                    --}}{{--                                  @if(empty($getMark->pivot->mark) )--}}
+{{--                                    --}}{{--2--}}
+{{--                                    --}}{{--                                    @else--}}
+
+{{--                                    --}}{{--                                    @endif--}}
+{{--                                    --}}{{--                                                                        {{$item->subjects->avg('pivot.mark')}}--}}
+{{--                                @endforeach--}}
+                            </b>
                         </td>
-                        @can('edit')
-                            <td class="text-center">
+                        <td class="text-center">
+                            @can('edit')
                                 <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
                                    data-bs-toggle="modal"
                                    data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                            </td>
-                        @endcan
-                        <td class="text-center">
-                            <a style="color: red" href="{{ route('students.destroy', $item->id) }}"
-                               class="btnDelete">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                            @endcan
+                            @can('delete')
+                                <a style="color: red" href="{{ route('students.destroy', $item->id) }}"
+                                   class="btnDelete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
             </table>
+            {{ Form::model($students, ['route' => ['mail_subjects_all'], 'method' => 'get'])}}
+            <button type="submit" class="btn btn-outline-warning btn-sm"
+                    onclick="return confirm('Do you want send to student?')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                </svg>
+            </button>
+            {{ Form::close()}}
             <form action="" method="POST" id="form-delete">
                 {{ method_field('DELETE') }}
                 {!! csrf_field() !!}
@@ -120,8 +146,36 @@
             </script>
         </div>
         <style>
+            .gradient-button {
+                margin: 5px;
+                font-family: "Arial Black", Gadget, sans-serif;
+                font-size: 20px;
+                padding: 5px;
+                text-align: center;
+                text-transform: uppercase;
+                transition: 0.5s;
+                background-size: 200% auto;
+                color: #FFF;
+                box-shadow: 0 0 20px #eee;
+                border-radius: 10px;
+                width: 42px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+                transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+                cursor: pointer;
+                display: inline-block;
+                border-radius: 55px;
+            }
+
+            .gradient-button-3 {
+                background-image: linear-gradient(to right, #7474BF 0%, #348AC7 51%, #7474BF 100%)
+            }
+
+            .gradient-button-3:hover {
+                background-position: right center;
+            }
+
             .width {
-                width: 100px;
+                width: 50px;
             }
         </style>
         <div>

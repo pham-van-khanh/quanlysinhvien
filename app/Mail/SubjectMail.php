@@ -2,25 +2,23 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMail extends Mailable
+class SubjectMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    private $user;
+    private $subjects;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct($subjects)
     {
-        $this->user = $user;
+        $this->subjects = $subjects;
     }
 
     /**
@@ -30,10 +28,10 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.mail')
-            ->subject('Successful Active Account Login')
+        return $this->view('mail.subject_mail')
+            ->subject('SUBJECT REGISTRATION NOTICE')
             ->with([
-                'user' => $this->user,
+                'subjects' => $this->subjects,
             ]);
     }
 }

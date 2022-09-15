@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\StudentExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubjectRequest;
+use App\Imports\StudentImport;
+use App\Mail\SubjectMail;
 use App\Models\Student;
+use App\Models\Subject;
+use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectController extends Controller
 {
-    protected $subjectRepository;
+    protected $subjectRepository, $studentRepository;
 
-    public function __construct(SubjectRepositoryInterface $subjectRepository)
+    public function __construct(SubjectRepositoryInterface $subjectRepository, StudentRepositoryInterface $studentRepository)
     {
         $this->subjectRepository = $subjectRepository;
+        $this->studentRepository = $studentRepository;
     }
 
     /**
@@ -27,17 +36,20 @@ class SubjectController extends Controller
     public function index()
     {
         $subjects = $this->subjectRepository->subjectList()->Paginate(5);
-        if (Auth::user()->roles[0]->name == 'admin') {
-            return view('admin.subjects.index', compact('subjects'));
+        $admin = Config::get('constants.options.roleAdmin');
+        $roleStudent = Config::get('constants.options.roleStudent');
+
+        if (Auth::user()->roles[0]->name == $admin) {
+            return view('admin.subjects.index', compact('subjects', 'admin', 'roleStudent'));
         }
         $student = Student::where('user_id', Auth::id())->first();
         $studentSubject = $student->subjects;
 
         if (!isset($studentSubject[0])) {
             $getMark = 1;
-            return view('admin.subjects.index', compact('subjects', 'getMark', 'student'));
+            return view('admin.subjects.index', compact('subjects', 'getMark', 'student', 'admin', 'roleStudent'));
         }
-        return view('admin.subjects.index', compact('subjects', 'studentSubject', 'student'));
+        return view('admin.subjects.index', compact('subjects', 'studentSubject', 'student', 'admin', 'roleStudent'));
     }
 
     /**
@@ -73,7 +85,9 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-
+        //handle show student learned this subject
+        $subjects = $this->subjectRepository->find($id);
+        return view('admin.subjects.list-student-registed', compact('subjects'));
     }
 
     /**
@@ -114,9 +128,66 @@ class SubjectController extends Controller
         $subject = $this->subjectRepository->find($id);
         if ($subject->students()->count('*')) {
             Session::flash('error', 'Cannot Delete Subjects Successful');
+            return redirect()->route('subjects.index');
         }
         $this->subjectRepository->delete($id);
         Session::flash('success', 'Delete Subjects Successful');
         return redirect()->route('subjects.index');
+    }
+
+    public function mail_subjects_all()
+    {
+        $subs = Subject::all();
+        $subjects = $this->subjectRepository->subjectList();
+        $students = Student::all();
+        foreach ($students as $student) {
+            if ($student->subjects->count() !== $subs->count()) {
+                $listIds[] = $student->id;
+            }
+        }
+        foreach ($listIds as $value) {
+            $listSubject = [];
+            $student = $this->studentRepository->find($value);
+            $subject_point = $student->subjects;
+            if ($subject_point->count() == 0) {
+                $listSubject = $subs;
+            } else {
+                foreach ($subs as $sub) {
+                    for ($i = 0; $i < $subject_point->count(); $i++) {
+                        if ($sub->id == $subject_point[$i]->id) {
+                            break;
+                        } elseif ($i == $subject_point->count() - 1) {
+                            $listSubject[] = $sub;
+                        }
+                    }
+                }
+            }
+            $mailable = new SubjectMail($listSubject);
+            Mail::to($student->email)->send($mailable);
+        }
+        return redirect()->route('students.index')->with('message', 'Successfully');
+    }
+
+    public function export($id)
+    {
+        return Excel::download(new StudentExport($id), 'point-student.xlsx');
+//        return Excel::store(new StudentExport, 'point-student.xlsx', 'disk-name');
+    }
+
+    public function import(Request $request, $id)
+    {
+        $subject = $this->subjectRepository->relationship(['students'])->find($id);
+        $fileImport = Excel::toCollection(new StudentImport($id), request()->file('import_file'));
+        foreach ($fileImport[0] as $import) {
+            foreach ($subject->students as $student) {
+                if ($import['id'] == $student['id']) {
+                    $student->pivot->where('student_id', '=', $student['id'])->where('subject_id', $id)->update([
+                        'mark' => $import['mark'],
+                    ]);
+                }
+            }
+        }
+        Session::flash('success', 'Subject Imported Successfully');
+        return redirect()->back();
     }
 }

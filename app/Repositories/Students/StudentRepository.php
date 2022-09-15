@@ -5,6 +5,8 @@ namespace App\Repositories\Students;
 use App\Models\Student;
 use App\Repositories\BaseRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class StudentRepository extends BaseRepository implements StudentRepositoryInterface
 {
@@ -36,6 +38,16 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         if (isset($data['age_to'])) {
             $student->whereYear('birthday', '>=', Carbon::now()->subYear($data['age_to'])->format('Y'));
         }
-        return $student->withTrashed()->paginate(2);
+        return $student->withTrashed()->paginate(3);
+    }
+
+    public function getStudentDeleted()
+    {
+        return $this->model->onlyTrashed()->paginate();
+    }
+
+    public function getStudentById()
+    {
+        return $this->model->where('user_id', Auth::id())->first()->id;
     }
 }
