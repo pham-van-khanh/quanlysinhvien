@@ -6,14 +6,12 @@ use App\Exports\StudentExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
-use App\Models\Student;
-use App\Repositories\Faculties\FacultyRepository;
-use App\Repositories\Students\StudentRepository;
-use App\Repositories\Subjects\SubjectRepository;
-use App\Repositories\Users\UserRepository;
+use App\Repositories\Faculties\FacultyRepositoryInterface;
+use App\Repositories\Students\StudentRepositoryInterface;
+use App\Repositories\Subjects\SubjectRepositoryInterface;
+use App\Repositories\Users\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -27,19 +25,21 @@ class StudentController extends Controller
         $userRepository,
         $subjectRepository,
         $facultyRepository,
-        $page;
+        $page,
+        $avg;
 
-    public function __construct(StudentRepository $studentRepository,
-                                FacultyRepository $facultyRepository,
-                                UserRepository    $userRepository,
-                                SubjectRepository $subjectRepository,
-                                Config            $page)
+    public function __construct(StudentRepositoryInterface $studentRepository,
+                                FacultyRepositoryInterface $facultyRepository,
+                                UserRepositoryInterface    $userRepository,
+                                SubjectRepositoryInterface $subjectRepository,
+                                Config                     $page, Config $avg)
     {
         $this->studentRepository = $studentRepository;
         $this->userRepository = $userRepository;
         $this->facultyRepository = $facultyRepository;
         $this->subjectRepository = $subjectRepository;
         $this->page = $page;
+        $this->avg = $avg;
     }
 
     /**
@@ -49,12 +49,11 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $students = $this->subjectRepository->relationship(['student']);
-        $subjects = $this->subjectRepository->count();
+        $avg = $this->avg::get('constants.options.avg');
         $students = $this->studentRepository->search($request->all());
-        # lấy ra faculty *faculties* và pluck từ id thành name
+        $countSubject = $this->subjectRepository->count();
         $faculties = $this->facultyRepository->pluck('name', 'id');
-        return view('admin.students.index', compact('students', 'faculties', 'subjects', 'students'));
+        return view('admin.students.index', compact('students', 'faculties', 'countSubject', 'students', 'avg'));
     }
 
     /**
@@ -122,11 +121,13 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = $this->studentRepository->find($id);
-        return response()->json([
-            'student' => $student,
-            'id' => $student->id,
-            'faculty_id' => $student->faculty_id
-        ]);
+        dd($student);
+        return view('admin.students.form', compact('student'));
+//        return response()->json([
+//            'student' => $student,
+//            'id' => $student->id,
+//            'faculty_id' => $student->faculty_id
+//        ]);
     }
 
     /**
@@ -187,14 +188,12 @@ class StudentController extends Controller
         return redirect()->route('subjects.index');
     }
 
-    public function subcribe($id)
+    public function resgistationFaculty(Request $request)
     {
-        $subject = $this->subjectRepository->find($id)->id;
-        $students = $this->studentRepository->newModel();
-        $studentId = Student::where('user_id', Auth::id())->first();
-        $students->subjects()->attach($subject, ['student_id' => $studentId]);
-        Session::flash('success', ' Registation Subject Successful');
-        return redirect()->route('subjects.index');
+        $data = $request['faculty_id'];
+        $student = $this->studentRepository->getStudentById();
+        $student->update($data, $student);
+        return redirect()->back();
     }
 
     public function updatePoint($id)
@@ -219,5 +218,6 @@ class StudentController extends Controller
         return Excel::download(new StudentExport($id), 'point-student.xlsx');
         return Excel::store(new StudentExport, 'point-student.xlsx', 'disk-name');
     }
+
 
 }

@@ -8,7 +8,6 @@ use App\Http\Requests\SubjectRequest;
 use App\Imports\StudentImport;
 use App\Mail\SubjectMail;
 use App\Models\Student;
-use App\Models\Subject;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
@@ -22,7 +21,8 @@ class SubjectController extends Controller
 {
     protected $subjectRepository, $studentRepository;
 
-    public function __construct(SubjectRepositoryInterface $subjectRepository, StudentRepositoryInterface $studentRepository)
+    public function __construct(SubjectRepositoryInterface $subjectRepository,
+                                StudentRepositoryInterface $studentRepository)
     {
         $this->subjectRepository = $subjectRepository;
         $this->studentRepository = $studentRepository;
@@ -137,22 +137,21 @@ class SubjectController extends Controller
 
     public function mail_subjects_all()
     {
-        $subs = Subject::all();
         $subjects = $this->subjectRepository->subjectList();
-        $students = Student::all();
+        $students = $this->studentRepository->getStudents();
         foreach ($students as $student) {
-            if ($student->subjects->count() !== $subs->count()) {
-                $listIds[] = $student->id;
+            if ($student->subjects->count() !== $subjects->count()) {
+                $getStudentLearned[] = $student->id;
             }
         }
-        foreach ($listIds as $value) {
+        foreach ($getStudentLearned as $value) {
             $listSubject = [];
             $student = $this->studentRepository->find($value);
             $subject_point = $student->subjects;
             if ($subject_point->count() == 0) {
-                $listSubject = $subs;
+                $listSubject = $subjects;
             } else {
-                foreach ($subs as $sub) {
+                foreach ($subjects as $sub) {
                     for ($i = 0; $i < $subject_point->count(); $i++) {
                         if ($sub->id == $subject_point[$i]->id) {
                             break;

@@ -5,17 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
+use App\Repositories\Students\StudentRepositoryInterface;
 use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
 {
 
 
-    protected $facultyRepository;
+    protected $facultyRepository, $studentRepository;
 
-    public function __construct(FacultyRepositoryInterface $facultyRepository)
+    public function __construct(FacultyRepositoryInterface $facultyRepository,
+                                StudentRepositoryInterface $studentRepository)
     {
         $this->facultyRepository = $facultyRepository;
+        $this->studentRepository = $studentRepository;
 
     }
 
@@ -27,7 +30,8 @@ class FacultyController extends Controller
     public function index()
     {
         $faculties = $this->facultyRepository->facultyList();
-        return view('admin.faculties.index', compact('faculties'));
+        $students = $this->studentRepository->getStudentById();
+        return view('admin.faculties.index', compact('faculties', 'students'));
     }
 
     /**
@@ -63,8 +67,6 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-
-
     }
 
     /**

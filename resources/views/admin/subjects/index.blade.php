@@ -9,7 +9,6 @@
         @endcan
     </div>
     <div class="card-body px-0 pb-0">
-        <div class="table-responsive p-0">
             <table class="table table-responsive-sm">
                 <thead>
                 <tr>
@@ -62,7 +61,7 @@
                                     @for($i = 0; $i < $studentSubject->count(); $i++)
                                         @if($subject->id == $studentSubject[$i]->id)
                                             @if(!$studentSubject[$i]->pivot->mark)
-                                                <td class="text-bg-info text-white text-center"> Has Not Updated</td>
+                                                <td class="text-success text-sm text-center"> Studying</td>
                                                 <td class="text-center "><input disabled type="checkbox"
                                                                                 checked></td>
                                             @else
@@ -92,16 +91,20 @@
                         </tr>
                     @endforeach
                     @if(Auth::user()->roles[0]->name == $roleStudent)
-                        <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
+{{--                        @if($student->subjects->count())--}}
+{{--                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA--}}
+{{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
+{{--                        @else--}}
+                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
+{{--                        @endif--}}
                     @endif
                 </form>
                 </tbody>
             </table>
-            <form action="" method="POST" id="form-delete">
-                {{ method_field('DELETE') }}
-                {!! csrf_field() !!}
-            </form>
-        </div>
+        <form action="" method="POST" id="form-delete">
+            {{ method_field('DELETE') }}
+            {!! csrf_field() !!}
+        </form>
         <div>
             {{$subjects->links()}}
         </div>
@@ -155,4 +158,5 @@
             });
         </script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    </div>
 @endsection

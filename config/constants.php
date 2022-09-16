@@ -5,5 +5,6 @@ return [
         'roleAdmin' => 'admin',
         'roleStudent' => 'student',
         'paginate' => 3,
+        'avg' => 5,
     ]
 ];

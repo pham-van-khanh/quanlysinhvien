@@ -20,35 +20,45 @@
                         Create
                     </th>
                     <th></th>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">
+                        Register Faculty
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($faculties as $index => $item)
-                    <tr>
-                        <td class="text-center">
-                            {{$index+1}}
-                        </td>
-                        <td class="text-center">
-                            {{ $item->name}}
-                        </td>
-                        <td class="text-center">
-                            {{ $item->created_at}}
-                        </td>
-
-                        <td class="text-center">
-                            @can('edit')
-                                <a style="color: #febc06" href="{{ route('faculties.edit', $item->id) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                            @endcan
-                            @can('delete')
-                                <a style="color: red" href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}" class="btnDelete">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            @endcan
-                        </td>
-                    </tr>
-                @endforeach
+                <form action="{{route('registerFaculty', $students)}}">
+                    @foreach ($faculties as $index => $item)
+                        <tr>
+                            <td class="text-center">
+                                {{$index+1}}
+                            </td>
+                            <td class="text-center">
+                                {{ $item->name}}
+                            </td>
+                            <td class="text-center">
+                                {{ $item->created_at}}
+                            </td>
+                            <td class="text-center">
+                                @can('edit')
+                                    <a style="color: #febc06" href="{{ route('faculties.edit', $item->id) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                @endcan
+                                @can('delete')
+                                    <a style="color: red"
+                                       href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}"
+                                       class="btnDelete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                @endcan
+                            </td>
+                            <td class="text-center">
+                                <input type="radio" value="{{$item->id}}">
+                            </td>
+                        </tr>
+                    @endforeach
+                    <button type="submit" class="btn btn-outline-success btn-sm">Register </button>
+                </form>
             </table>
             <form action="" method="POST" id="form-delete">
                 {{ method_field('DELETE') }}

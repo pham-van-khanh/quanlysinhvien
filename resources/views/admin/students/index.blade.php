@@ -78,7 +78,7 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            {{ $item->subjects->count() .'/'. $subjects }}
+                            {{ $item->subjects->count() .'/'. $countSubject }}
                         </td>
                         <td class="text-center">
                             <a class="gradient-button gradient-button-3"
@@ -86,20 +86,24 @@
                                 <i class="fa fa-arrow-up text-white"></i>
                             </a>
                         </td>
-                        <td class="text-center">
-                            <b>
-                                                                {{$item->subjects->avg('pivot.mark')}}
-{{--                                @foreach($item->subjects as $getMark)--}}
-{{--                                    @dump($getMark->pivot->mark)--}}
-{{--                                    --}}{{--                                  @if(empty($getMark->pivot->mark) )--}}
-{{--                                    --}}{{--2--}}
-{{--                                    --}}{{--                                    @else--}}
-
-{{--                                    --}}{{--                                    @endif--}}
-{{--                                    --}}{{--                                                                        {{$item->subjects->avg('pivot.mark')}}--}}
-{{--                                @endforeach--}}
-                            </b>
-                        </td>
+                        @if($item->subjects->count() == 0)
+                            <td class="text-sm text-warning text-sm-center"> Haven't Registered</td>
+                        @elseif($item->subjects->count() < $countSubject)
+                            <td class="text-sm text-success text-sm-center"> Studying</td>
+                        @else
+                            @for($i=0; $i < $countSubject; $i++)
+                                @if(!$item->subjects[$i]->pivot->mark)
+                                    <td class="text-sm text-center text-success text-sm-center"> Studying</td>
+                                    @break
+                                @elseif($i == $countSubject - 1)
+                                    @if(round($item->subjects->avg('pivot.mark'), 2) < $avg)
+                                        <td class="text-center text-danger"> {{round($item->subjects->avg('pivot.mark'), 2)}} </td>
+                                    @else
+                                        <td class="text-center"> {{round($item->subjects->avg('pivot.mark'), 2)}} </td>
+                                    @endif
+                                @endif
+                            @endfor
+                        @endif
                         <td class="text-center">
                             @can('edit')
                                 <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
