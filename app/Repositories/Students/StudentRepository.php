@@ -24,7 +24,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             ->select('id', 'name', 'faculty_id', 'email', 'avatar', 'birthday', 'phone', 'created_at', 'updated_at')
             ->with('faculty')
             ->withTrashed()
-            ->orderBy('updated_at', 'DESC')->paginate(4);
+            ->orderBy('updated_at', 'DESC')->paginate(5);
     }
 
     public function search($data)
@@ -38,12 +38,18 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         if (isset($data['age_to'])) {
             $student->whereYear('birthday', '>=', Carbon::now()->subYear($data['age_to'])->format('Y'));
         }
-        return $student->withTrashed()->paginate(3);
+        return $student->withTrashed()->paginate(5);
     }
 
     public function getStudentDeleted()
     {
         return $this->model->onlyTrashed()->paginate();
+    }
+
+    public function getStudent()
+    {
+        return $this->model->where('user_id',Auth::user()->id)->first();
+
     }
 
     public function getStudentById()

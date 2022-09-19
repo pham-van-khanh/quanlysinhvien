@@ -6,16 +6,19 @@ use App\Exports\StudentExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
+use App\Models\Student;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use App\Repositories\Users\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 
@@ -87,13 +90,13 @@ class StudentController extends Controller
         $student['user_id'] = $user->id;
         $student['name'] = $user->name;
         $student['email'] = $user->email;
-        $student['faculty_id'] = $request['faculty_id'];
-        $student['avatar'] = null;
+        $student['faculty_id'] = NULL;
+        $student['avatar'] = 'images/students/Phạm Văn Khánh_T5wx0WCn236nh58fHlZBAyqaR1SPlv4bduoIchwk.png';
         $student['phone'] = $request['phone'];
         $student['birthday'] = $dt->toDateString();
         $student['gender'] = $request['gender'];
         $student['address'] = $request['address'];
-        $student['code'] = Uuid::generate()->string;
+        $student['code'] = Str::uuid()->toString();
         $students = $this->studentRepository->create($student);
         $mailable = new SendMail($user);
         Mail::to($user->email)->send($mailable);
@@ -121,7 +124,6 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = $this->studentRepository->find($id);
-        dd($student);
         return view('admin.students.form', compact('student'));
 //        return response()->json([
 //            'student' => $student,
@@ -147,6 +149,7 @@ class StudentController extends Controller
 //        $student->email = $data['email'];
 //        $student->gender = $data['gender'];
 //        $student->faculty_id = $data['faculty_id'];
+        dd($data);
         $this->studentRepository->update($data);
         return response()->json([]);
     }
@@ -188,11 +191,48 @@ class StudentController extends Controller
         return redirect()->route('subjects.index');
     }
 
-    public function resgistationFaculty(Request $request)
+    public function resgistationFaculty(Request $request, $id)
     {
-        $data = $request['faculty_id'];
-        $student = $this->studentRepository->getStudentById();
-        $student->update($data, $student);
+        $student = $this->studentRepository->getStudent();
+        $countSubject = $this->subjectRepository->count('id');
+        $sum = 0;
+        $count = 0;
+        if ($student->faculty_id) {
+            Session::flash('error', 'You can not register');
+            return redirect()->back();
+        }
+        foreach ($student->subjects as $std) {
+            if ($student->subjects->count() == $countSubject) {
+                $count++;
+                if (!$std->pivot->mark) {
+                    Session::flash('error', 'You can not register');
+                    return redirect()->back();
+                }
+                $sum += $std->pivot->mark;
+            } else {
+                Session::flash('error', 'You can not register');
+
+                return redirect()->back();
+            }
+        }
+
+        if ($sum) {
+            $avg = $sum / $count;
+            if ($avg < 5) {
+                Session::flash('error', 'Your GPA Is Not Eligible To Apply For This Course ');
+
+                return redirect()->back();
+            } else {
+                $data = [
+                    'faculty_id' => $id
+                ];
+                $this->studentRepository->update($student->id, $data);
+                Session::flash('success', 'Register Successfully');
+
+                return redirect()->back();
+            }
+        }
+        Session::flash('error', 'You can not register');
         return redirect()->back();
     }
 

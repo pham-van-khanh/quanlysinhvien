@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
@@ -29,9 +30,9 @@ class FacultyController extends Controller
      */
     public function index()
     {
+        $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
-        $students = $this->studentRepository->getStudentById();
-        return view('admin.faculties.index', compact('faculties', 'students'));
+        return view('admin.faculties.index', compact('faculties', 'student'));
     }
 
     /**
@@ -93,7 +94,7 @@ class FacultyController extends Controller
     public function update(FacultyRequest $request, $id)
     {
         $data = $request->all();
-        $faculty = $this->facultyRepository->update($id, $data);
+        $this->facultyRepository->update($id, $data);
         Session::flash('success', 'Update Successful');
         return redirect()->route('faculties.index');
     }

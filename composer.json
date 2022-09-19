@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "doctrine/dbal": "^3.4",
         "guzzlehttp/guzzle": "^7.5",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
@@ -16,6 +17,7 @@
         "maatwebsite/excel": "^3.1",
         "psr/simple-cache": "2.0",
         "spatie/laravel-permission": "^5.5",
+        "symfony/http-foundation": "^6.1",
         "webpatser/laravel-uuid": "^4.0"
     },
     "require-dev": {

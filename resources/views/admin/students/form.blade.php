@@ -2,8 +2,11 @@
 @section('title', 'Student')
 @section('content-title', ' Student')
 @section('content')
-
-    {{Form::model($student, array('method' => 'post','route' =>'students.store','enctype'=>'multipart/form-data'))}}
+    @if($student->id)
+        {{ Form::model($student, array('method' => 'PUT', 'route' => ['students.update', $student->id])) }}
+    @else
+        {{Form::model($student, array('method' => 'post','route' =>'students.store','enctype'=>'multipart/form-data'))}}
+    @endif
     <div class="row mb-4">
         <div class="col">
             <div class="form-outline">
@@ -12,7 +15,6 @@
                 <h8 class="text-danger">{{ $errors->first('name') }}</h8>
             </div>
         </div>
-
         <div class="col">
             <div class="form-outline">
                 {{ Form::label('name', 'Email Student') }}
@@ -20,20 +22,11 @@
                 <h8 class="text-danger">{{ $errors->first('email') }}</h8>
             </div>
         </div>
-
-        <div class="col">
-            <div class="form-outline">
+        <div class="row mb-4">
+            <div class="col">
                 {{ Form::label('name', 'Phone Student') }}
                 {{ Form::text('phone', $student->phone, array('class'=>'form-control')) }}
                 <h8 class="text-danger">{{ $errors->first('phone') }}</h8>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="form3Example1">Faculty</label>
-                    {!!Form::select('faculty_id', $faculties,'', ['id' => 'faculty_id', 'class' => 'form-control'])!!}
-                </div>
             </div>
             <div class="col">
                 <div class="form-outline">
@@ -51,8 +44,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="form-outline">
         {{ Form::label('name', 'Gender Student') }}
         {{ Form::radio('gender', '1', true) }}

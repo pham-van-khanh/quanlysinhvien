@@ -41,7 +41,7 @@ Route::middleware(['auth', 'permission:list'])->group(function () {
     Route::resource('subjects', SubjectController::class)->only('index');
 //    Route::resource('students/{students}', StudentController::class)->only(['edit' => 'update']);
 });
-Route::get('registrations/{student}', [StudentRegitationController::class, 'update'])->name('registerFaculty');
+//Route::put('registrations/{student}', [StudentRegitationController::class, 'update'])->name('registerFaculty');
 Route::get('information/{student}', [InformationController::class, 'index'])->name('information');
 Route::post('information/uploadImage/{student}', [InformationController::class, 'uploadImage'])->name('uploadImage');
 Route::post('student/resgistation', [StudentController::class, 'resgistation'])->name('resgistation');
@@ -56,7 +56,7 @@ Route::get('/mail_subjects_all', [SubjectController::class, 'mail_subjects_all']
 Route::prefix('student')->group(function () {
     Route::get('show-point/{student}', [StudentController::class, 'updatePoint'])->name('updatePoint');
     Route::post('{student}', [StudentController::class, 'handleUpdate']);
-    Route::post('regis/{faculty_id}',[StudentController::class, 'resgistationFaculty'])->name('resgistationFaculty');
+    Route::put('registerFaculty/{id}',[StudentController::class, 'resgistationFaculty'])->name('registerFaculty');
 });
 //Route::prefix('marks')->group(function () {
 //    Route::get('subject/{student}', [StudentController::class, 'show']);

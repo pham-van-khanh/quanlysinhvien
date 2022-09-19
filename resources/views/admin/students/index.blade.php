@@ -74,7 +74,7 @@
                             @if(isset($item->faculty))
                                 {{ $item->faculty->name }}
                             @else
-                                <b class="text-danger"> Students who have not registered any faculties! </b>
+                                <b class="text-danger">  Have Not Registered Any Faculties! </b>
                             @endif
                         </td>
                         <td class="text-center">
@@ -106,11 +106,14 @@
                         @endif
                         <td class="text-center">
                             @can('edit')
-                                <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
+                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}" >
                                     <i class="fa fa-edit"></i>
                                 </a>
+{{--                                <a style="color: #febc06" href="" onclick="update({{ $item->id }})"--}}
+{{--                                   data-bs-toggle="modal"--}}
+{{--                                   data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">--}}
+{{--                                    <i class="fa fa-edit"></i>--}}
+{{--                                </a>--}}
                             @endcan
                             @can('delete')
                                 <a style="color: red" href="{{ route('students.destroy', $item->id) }}"

@@ -9,98 +9,127 @@
         @endcan
     </div>
     <div class="card-body px-0 pb-0">
-            <table class="table table-responsive-sm">
-                <thead>
-                <tr>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Stt</th>
-                    <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">Name
+        <table class="table table-responsive-sm">
+            <thead>
+            <tr>
+                <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Stt</th>
+                <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">Name
+                </th>
+                @if(Auth::user()->roles[0]->name == $admin)
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        Action
                     </th>
-                    @if(Auth::user()->roles[0]->name == $admin)
-                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                            Action
-                        </th>
-                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                            Update Mark Student
-                        </th>
-                    @else
-                        <th></th>
-                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                            Point
-                        </th>
-                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                            registration
-                        </th>
-                    @endif
-                </tr>
-                </thead>
-                <tbody>
-                <form action="{{route('resgistation')}}" method="post">
-                    @csrf
-                    @foreach($subjects as $index => $subject)
-                        <tr>
-                            <td class="text-center">{{$index + 1}}</td>
-                            <td><b>{{$subject->name}}</b></td>
-                            <td class="text-center">
-                                @can('edit')
-                                    <a style="color: #febc06" href="{{ route('subjects.edit', $subject->id) }}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                @endcan
-                                @can('delete')
-                                    <a style="color: red" href="{{ route('subjects.destroy', $subject->id) }}"
-                                       class="btnDelete">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                @endcan
-                            </td>
-                            @if(Auth::user()->roles[0]->name == $roleStudent)
-                                @if(isset($getMark))
-                                    <td></td>
-                                    <td class=" text-center"><input type="checkbox"></td>
-                                @else
-                                    @for($i = 0; $i < $studentSubject->count(); $i++)
-                                        @if($subject->id == $studentSubject[$i]->id)
-                                            @if(!$studentSubject[$i]->pivot->mark)
-                                                <td class="text-success text-sm text-center"> Studying</td>
-                                                <td class="text-center "><input disabled type="checkbox"
-                                                                                checked></td>
-                                            @else
-                                                <td class="text-center">{{$studentSubject[$i]->pivot->mark}}/10</td>
-                                                <td class="text-center"><input disabled type="checkbox" checked></td>
-                                            @endif
-                                            @break
-                                        @elseif($i == $studentSubject->count() - 1)
-                                            @if($subject->id != $studentSubject[$i]->id)
-                                                <td></td>
-                                                <td class="text-center">
-                                                    <input name="subject_id[]"
-                                                           value="{{$subject->id}}" type="checkbox">
-                                                </td>
-                                            @endif
-                                        @endif
-                                    @endfor
-                                @endif
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        Update Mark Student
+                    </th>
+                @else
+                    <th></th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        Point
+                    </th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        registration
+                    </th>
+                @endif
+            </tr>
+            </thead>
+            <tbody>
+            <form action="{{route('resgistation')}}" method="post">
+                @csrf
+                @foreach($subjects as $index => $subject)
+                    <tr>
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td><b>{{$subject->name}}</b></td>
+                        <td class="text-center">
+                            @can('edit')
+                                <a style="color: #febc06" href="{{ route('subjects.edit', $subject->id) }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            @endcan
+                            @can('delete')
+                                <a style="color: red" href="{{ route('subjects.destroy', $subject->id) }}"
+                                   class="btnDelete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            @endcan
+                        </td>
+                        @if(Auth::user()->roles[0]->name == $roleStudent)
+                            @if(isset($getMark))
+                                <td></td>
+                                <td class=" text-center"><input name="subject_id[]"
+                                                                value="{{$subject->id}}" type="checkbox"></td>
                             @else
-                                <td class="text-center">
-                                    <a class="gradient-button gradient-button-3 btn-sm"
-                                       href="{{route('subjects.show', $subject->id)}}">
-                                        <i class="fa fa-arrow-up text-white"></i>
-                                    </a>
-                                </td>
+                                @for($i = 0; $i < $studentSubject->count(); $i++)
+                                    @if($subject->id == $studentSubject[$i]->id)
+                                        @if(!$studentSubject[$i]->pivot->mark)
+                                            <td class="text-success text-sm text-center"> Studying</td>
+                                            <td class="text-center "><input disabled type="checkbox" checked></td>
+                                        @else
+                                            <td class="text-center">{{$studentSubject[$i]->pivot->mark}}/10</td>
+                                            <td class="text-center"><input disabled type="checkbox" checked></td>
+                                        @endif
+                                        @break
+                                    @elseif($i == $studentSubject->count() - 1)
+                                        @if($subject->id != $studentSubject[$i]->id)
+                                            <td></td>
+                                            <td class="text-center">
+                                                <input name="subject_id[]"
+                                                       value="{{$subject->id}}"
+                                                       type="checkbox">
+                                            </td>
+                                        @endif
+                                    @endif
+                                @endfor
                             @endif
-                        </tr>
-                    @endforeach
-                    @if(Auth::user()->roles[0]->name == $roleStudent)
-{{--                        @if($student->subjects->count())--}}
-{{--                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA--}}
-{{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
-{{--                        @else--}}
+                        @else
+                            <td class="text-center">
+                                <a class="gradient-button gradient-button-3 btn-sm"
+                                   href="{{route('subjects.show', $subject->id)}}">
+                                    <i class="fa fa-arrow-up text-white"></i>
+                                </a>
+                            </td>
+                        @endif
+                    </tr>
+                @endforeach
+                @if(Auth::user()->roles[0]->name == $roleStudent)
+                    {{--                    @foreach($student->subjects as $item)--}}
+                    {{--                        @if('checkbox')--}}
+                    {{--                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
+                    {{--                            @break--}}
+                    {{--                        @elseif($item->pivot->mark)--}}
+                    {{--                            <button type="button" disabled class="btn btn-outline-success btn-sm">GPA--}}
+                    {{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
+                    {{--                            --}}{{--                                @for($i = 0; $i < $item->count(); $i++)--}}
+                    {{--                            --}}{{--                                    @if($i == $subjects->count() - 1)--}}
+                    {{--                            --}}{{--                                      --}}
+                    {{--                            --}}{{--                                    @else--}}
+                    {{--                            --}}{{--                                        {{round($item->subjects->avg('pivot.mark'), 2)}}--}}
+                    {{--                            --}}{{--                                    @endif--}}
+                    {{--                            --}}{{--                                @endfor--}}
+                    {{--                        @endif--}}
+
+
+
+                    {{--                        --}}{{--                        @if($student->subjects->count())--}}
+                    {{--                        --}}{{--                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA--}}
+                    {{--                        --}}{{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
+                    {{--                        --}}{{--                        @else--}}
+                    {{--                        --}}{{--                        <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
+                    {{--                        --}}{{--                        @endif--}}
+                    {{--                    @endforeach--}}
+                    @if($student->subjects)
+                        @if(!'checkbox')
+                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA:  </button>
+                        @else
                             <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
-{{--                        @endif--}}
+                        @endif
+                    @else
+                        2
                     @endif
-                </form>
-                </tbody>
-            </table>
+                @endif
+            </form>
+            </tbody>
+        </table>
         <form action="" method="POST" id="form-delete">
             {{ method_field('DELETE') }}
             {!! csrf_field() !!}
