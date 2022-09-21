@@ -54,7 +54,7 @@ class Email extends Command
             if ($student->subjects->avg('pivot.mark') > 5) {
                 $result = 'Are you ok ';
             } else {
-                $result = 'ngu vcl';
+                $result = 'No ';
             }
             Mail::to($student->email)->send(new StatusStudentMail($result));
         }
