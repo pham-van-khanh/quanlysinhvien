@@ -57,6 +57,7 @@ class Email extends Command
                 $flag = true;
             } else {
                 $flag = false;
+
             }
             Mail::to($student->email)->queue(new StatusStudentMail(1));
         }
