@@ -50,16 +50,14 @@ class Email extends Command
             }
         }
         $result = '';
-        $flag = true;
         foreach ($listStudentFullMark as $student) {
             if ($student->subjects->avg('pivot.mark') > 5) {
-//                $result = 'You Passed';
-                $flag = true;
+                $result = 'You Passed';
             } else {
-                $flag = false;
-
+                $result = 'You Fail';
             }
-            Mail::to($student->email)->queue(new StatusStudentMail(1));
+            Mail::to($student->email)->queue(new StatusStudentMail($result));
         }
+        return 0;
     }
 }

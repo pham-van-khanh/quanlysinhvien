@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Faculty;
-use App\Models\Student;
-use App\Models\User;
+use Database\Factories\StudentFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Student::factory(10)->create();
+        Model::unguard();
+        $this->call([StudentSeeder::class]);
+        Model::reguard();
     }
 }

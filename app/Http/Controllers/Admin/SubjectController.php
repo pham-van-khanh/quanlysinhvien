@@ -129,7 +129,7 @@ class SubjectController extends Controller
             Session::flash('error', 'Cannot Delete Subjects Successful');
             return redirect()->route('subjects.index');
         }
-        $this->subjectRepository->delete($id);
+        $subject->delete();
         Session::flash('success', 'Delete Subjects Successful');
         return redirect()->route('subjects.index');
     }

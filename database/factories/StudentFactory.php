@@ -2,37 +2,34 @@
 
 namespace Database\Factories;
 
-
-use App\Models\Student;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-$factory->define(User::class, function (Faker $faker) {
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Student>
+ */
+class StudentFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        $user = User::factory()->create();
         return [
-            'name' => $faker->name,
-            'email' => $faker->email,
-            'password' => '$2a$12$71lR.o9aMev3pbWC9FzYKO.ZTH2.hbGoEca8z3eeyvPqEdBKrYer.',
-        ];
-    });
-
-    $factory->define(Student::class, function (Faker $faker) {
-        return [
-            'user_id' => function () {
-                return factory('App\Models\User')->create()->id;
-            },
-            'faculty_id' => function () {
-                return factory('App\Models\Faculty')->create()->id;
-            },
-            'email' => function () {
-                return factory('App\Models\User')->create()->email;
-            },
+            'user_id' => $user->id,
+            'faculty_id' => rand(1, 48),
+            'email' => $user->email,
+            'name' => $user->name,
+            'avatar' => 1,
+            'phone' => 1,
             'gender' => rand(0, 1),
-            'birthday' => $faker->date,
-            'avatar' => $faker->imageUrl(100, 100),
-            'address' => $faker->address,
+            'birthday' => $this->faker->date,
+            'address' => $this->faker->address,
             'code' => Str::uuid()->toString(),
-
         ];
-    });
-
+    }
+}

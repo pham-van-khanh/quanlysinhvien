@@ -2,11 +2,13 @@
 <html lang="en-US">
 
 <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta name="description" content="Appointment Reminder Email Template">
 </head>
 <style>
-    a:hover {text-decoration: underline !important;}
+    a:hover {
+        text-decoration: underline !important;
+    }
 </style>
 
 <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
@@ -23,7 +25,8 @@
                 <tr>
                     <td style="text-align:center;">
                         <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                            <img width="60" src="https://i.ibb.co/hL4XZp2/android-chrome-192x192.png" title="logo" alt="logo">
+                            <img width="60" src="https://i.ibb.co/hL4XZp2/android-chrome-192x192.png" title="logo"
+                                 alt="logo">
                         </a>
                     </td>
                 </tr>
@@ -45,16 +48,20 @@
                                     <table cellpadding="0" cellspacing="0"
                                            style="width: 100%; border: 1px solid #ededed">
                                         <tbody>
-{{--                                        @foreach($result as $res)--}}
-                                            <tr>
-                                                <td
-                                                    style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:rgba(0,0,0,.64)">
-                                                    あなたは次の科目に登録されていません:</td>
-                                                <td
-                                                    style="padding: 10px; border-bottom: 1px solid #ededed; color: #455056;">
-{{--                                                    {{$res}}</td>--}}
-                                            </tr>
-{{--                                        @endforeach--}}
+                                        <tr>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:rgba(0,0,0,.64)">
+                                                あなたは次の科目に登録されていません:
+                                            </td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed; color: #455056;">
+                                                @if($result = 'You Passed')
+                                                    <p style="color: #19e31c">{{$result}}</p>
+                                                @else
+                                                    <b style="color: #e50b3d">{{$result}}</b>
+                                                @endif
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </td>
@@ -67,11 +74,6 @@
                 </tr>
                 <tr>
                     <td style="height:20px;">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;">
-                        <p style="font-size:14px; color:#455056bd; line-height:18px; margin:0 0 0;">&copy; <strong>www.rakeshmandal.com</strong></p>
-                    </td>
                 </tr>
             </table>
         </td>

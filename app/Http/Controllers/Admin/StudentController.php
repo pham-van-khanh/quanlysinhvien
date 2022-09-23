@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
 use App\Models\Student;
+use App\Models\User;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
@@ -155,6 +156,9 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = $this->studentRepository->find($id);
+        $users = User::where('id', $student->user_id)->get();
+        $user = $users[0]->id;
+        $user->delete();
         $student->delete();
         Session::flash('success', 'Delete Student Successful');
         return redirect()->route('students.index');
