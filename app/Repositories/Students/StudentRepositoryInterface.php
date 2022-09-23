@@ -15,4 +15,5 @@ interface StudentRepositoryInterface
     public function getStudentById();
 
     public function getStudent();
+
 }

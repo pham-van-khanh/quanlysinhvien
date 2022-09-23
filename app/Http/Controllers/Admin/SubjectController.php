@@ -66,7 +66,7 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(SubjectRequest $request)
@@ -80,12 +80,11 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //handle show student learned this subject
         $subjects = $this->subjectRepository->find($id);
         return view('admin.subjects.list-student-registed', compact('subjects'));
     }
@@ -93,7 +92,7 @@ class SubjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -105,8 +104,8 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -120,7 +119,7 @@ class SubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -137,7 +136,7 @@ class SubjectController extends Controller
 
     public function mail_subjects_all()
     {
-        $subjects = $this->subjectRepository->subjectList();
+        $subjects = $this->subjectRepository->getAll();
         $students = $this->studentRepository->getStudents();
         foreach ($students as $student) {
             if ($student->subjects->count() !== $subjects->count()) {
@@ -162,7 +161,7 @@ class SubjectController extends Controller
                 }
             }
             $mailable = new SubjectMail($listSubject);
-            Mail::to($student->email)->send($mailable);
+            Mail::to($student->email)->queue($mailable);
         }
         return redirect()->route('students.index')->with('message', 'Successfully');
     }
@@ -170,7 +169,6 @@ class SubjectController extends Controller
     public function export($id)
     {
         return Excel::download(new StudentExport($id), 'point-student.xlsx');
-//        return Excel::store(new StudentExport, 'point-student.xlsx', 'disk-name');
     }
 
     public function import(Request $request, $id)
@@ -187,6 +185,22 @@ class SubjectController extends Controller
             }
         }
         Session::flash('success', 'Subject Imported Successfully');
+        return redirect()->back();
+    }
+
+    public function updateMark(Request $request, $student)
+    {
+        $student = $this->studentRepository->find($student);
+        $students = $student->subjects;
+        for ($i = 0; $i < $students->count(); $i++) {
+            if ($request->mark[$i] != 'null') {
+                $student->subjects[$i]->pivot
+                    ->update([
+                        'mark' => $request['mark'][$i]
+                    ]);
+            }
+        }
+        Session::flash('success', 'Update Mark For "' . $student->name . '" Successful');
         return redirect()->back();
     }
 }

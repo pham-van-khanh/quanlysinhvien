@@ -1,13 +1,7 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Faculty')
-@section('title', 'List Faculty')
+@section('content-title', 'List Deleted Student')
+@section('title', 'List Deleted Student')
 @section('content')
-    <div class="col-2 flex-md-grow-1">
-        @can('create')
-            <a href="{{ route('faculties.create') }}"
-               class="btn btn-info btn-sm"> Add Faculty </a>
-        @endcan
-    </div>
     <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -17,7 +11,7 @@
                     <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name
                     </th>
                     <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time
-                        Create
+                        Deleted
                     </th>
                     <th></th>
                 </tr>
@@ -32,9 +26,8 @@
                             {{ $item->name}}
                         </td>
                         <td class="text-center">
-                            {{ $item->created_at}}
+                            {{ $item->deleted_at}}
                         </td>
-
                         <td class="text-center">
                             @can('edit')
                                 <a style="color: #febc06" href="{{ route('faculties.edit', $item->id) }}">
