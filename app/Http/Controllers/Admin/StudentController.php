@@ -13,14 +13,12 @@ use App\Repositories\Subjects\SubjectRepositoryInterface;
 use App\Repositories\Users\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
-use Ramsey\Uuid\Uuid;
 
 class StudentController extends Controller
 {
@@ -52,11 +50,12 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        $student = Student::all();
         $avg = $this->avg::get('constants.options.avg');
         $students = $this->studentRepository->search($request->all());
         $countSubject = $this->subjectRepository->count();
         $faculties = $this->facultyRepository->pluck('name', 'id');
-        return view('admin.students.index', compact('students', 'faculties', 'countSubject', 'students', 'avg'));
+        return view('admin.students.index', compact('students', 'faculties', 'countSubject', 'students', 'avg', 'student'));
     }
 
     /**
@@ -100,7 +99,7 @@ class StudentController extends Controller
         $students = $this->studentRepository->create($student);
         $mailable = new SendMail($user);
         Mail::to($user->email)->send($mailable);
-        return redirect()->route('students.index');
+        return response()->json();
     }
 
     /**
@@ -124,12 +123,12 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = $this->studentRepository->find($id);
-        return view('admin.students.form', compact('student'));
-//        return response()->json([
-//            'student' => $student,
-//            'id' => $student->id,
-//            'faculty_id' => $student->faculty_id
-//        ]);
+//        return view('admin.students.form', compact('student'));
+        return response()->json([
+            'student' => $student,
+            'id' => $student->id,
+            'faculty_id' => $student->faculty_id
+        ]);
     }
 
     /**
@@ -142,16 +141,9 @@ class StudentController extends Controller
     public function update(StudentRequest $request, $id)
     {
         $data = $request->all();
-//        $student = Student::find($id);
-//        $student->name = $data['name'];
-//        $student->address = $data['address'];
-//        $student->phone = $data['phone'];
-//        $student->email = $data['email'];
-//        $student->gender = $data['gender'];
-//        $student->faculty_id = $data['faculty_id'];
-        dd($data);
-        $this->studentRepository->update($data);
-        return response()->json([]);
+        $student = $this->studentRepository->update($id, $data);
+        Session::flash('success', 'Update Successful');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -176,13 +168,13 @@ class StudentController extends Controller
 
     public function restore($id)
     {
-        $model = $this->studentRepository::withTrashed()->find($id);
+        $model = $this->studentRepository->find($id);
         $model->restore();
         Session::flash('success', 'Restore Student Successful');
         return redirect()->route('students.index');
     }
 
-    public function resgistation(Request $request)
+    public function registerSubject(Request $request)
     {
         $students = $this->studentRepository->newModel();
         $studentId = $this->studentRepository->getStudentById();
@@ -191,7 +183,7 @@ class StudentController extends Controller
         return redirect()->route('subjects.index');
     }
 
-    public function resgistationFaculty(Request $request, $id)
+    public function registerFaculty(Request $request, $id)
     {
         $student = $this->studentRepository->getStudent();
         $countSubject = $this->subjectRepository->count('id');
@@ -259,5 +251,9 @@ class StudentController extends Controller
         return Excel::store(new StudentExport, 'point-student.xlsx', 'disk-name');
     }
 
+    public function showSubject($id)
+    {
+        return Student::with(['subjects'])->find($id);
+    }
 
 }

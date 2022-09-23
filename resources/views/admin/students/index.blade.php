@@ -23,10 +23,79 @@
     </div>
     <div class="col-2 flex-md-grow-1">
         @can('create')
-            <a href="{{ route('students.create') }}"
-               class="btn btn-info btn-sm"> Add Students </a>
+            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#create-bookmark"> Add Student</button>
         @endcan
     </div>
+    <div class="modal fade modal-bookmark" id="create-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Student</h5>
+                </div>
+                <div class="modal-body">
+                    {{ Form::model($student, ['method' => 'POST']) }}
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            {!!Form::label('', 'Name student')!!}
+                            {!!Form::text('name', '',['class' => 'form-control' ,'id' => 'name_student','placeholder' => 'Enter name student'])!!}
+                            <div class="invalid-feedback validate-name"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {!!Form::label('', 'Email student')!!}
+                            {!!Form::email('email', '',['class' => 'form-control' ,'id' => 'email_student','placeholder' => 'Enter email student'])!!}
+                            <div class="invalid-feedback validate-email"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {!!Form::label('', 'Phone number student')!!}
+                            {!!Form::text('phone', '',['class' => 'form-control' ,'id' => 'phone_student','placeholder' => 'Enter phone student'])!!}
+                            <div class="invalid-feedback validate-phone"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {!!Form::label('', 'Birthday student')!!}
+                            {!!Form::date('birthday', '',['class' => 'form-control' ,'id' => 'birthday_student','placeholder' => 'Enter birthday student'])!!}
+                            <div class="invalid-feedback validate-birthday"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {!!Form::label('', 'Address student')!!}
+                            {!!Form::text('address', '',['class' => 'form-control' ,'id' => 'address_student','placeholder' => 'Enter address student'])!!}
+                            <div class="invalid-feedback validate-address"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{ Form::label('', 'Gender', ['class' => 'col-form-label pt-0']) }}
+                            <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                                <div class="radio radio-primary">
+                                    {{Form::radio('gender', '0', true, ['class' => 'form-check-input', 'id' => 'radioinline11'])}}
+                                    {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
+                                </div>
+                                <div class="radio radio-primary">
+                                    {{Form::radio('gender', '1', false, ['class' => 'form-check-input', 'id' => 'radioinline22'])}}
+                                    {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
+                                </div>
+                                <div class="invalid-feedback validate-gender"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {!! Form::submit('Save', ['class' => 'btn btn-secondary','id' => 'saveCreateForm'])!!}
+                    {!! Form::button('Cancel', ['class' => 'btn btn-primary','data-bs-dismiss' => 'modal'])!!}
+                    {!! Form::close() !!}
+                </div>
+                {!!Form::hidden('student_id', '',['id' => 'student_id'])!!}
+                {!!Form::hidden('user_id', '',['id' => 'user_id'])!!}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{asset('dist/js/add_student.js')}}"></script>
+    <script type="text/javascript" src="{{asset('dist/js/show_subject.js')}}"></script>
     <div class="card-body px-0 pb-0">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -35,10 +104,8 @@
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
                         Stt
                     </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
-                    </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Avatar
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Avatar
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Name
                         Faculty
@@ -47,7 +114,7 @@
                         Learned
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Update Point
+                        Show Subject
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">AVG
                         Point
@@ -68,26 +135,66 @@
                             {{ $item->name }}
                         </td>
                         <td class="text-center">
-                            <img src="{{ asset($item->avatar) }}" class="width">
+                            <img title="{{$item->name}}" src="{{ asset($item->avatar) }}" class="width">
                         </td>
                         <td class="text-center">
                             @if(isset($item->faculty))
                                 {{ $item->faculty->name }}
                             @else
-                                <b class="text-danger">  Have Not Registered Any Faculties! </b>
+                                <b class="text-danger">Registered Any Faculties! </b>
                             @endif
                         </td>
                         <td class="text-center">
                             {{ $item->subjects->count() .'/'. $countSubject }}
                         </td>
                         <td class="text-center">
-                            <a class="gradient-button gradient-button-3"
-                               href="{{ route('updatePoint', $item->id) }}">
+                            <a data-toggle="modal" data-id="{{$item->id}}" data-target="#exampleModal"
+                               class="btnModal gradient-button gradient-button-3">
                                 <i class="fa fa-arrow-up text-white"></i>
                             </a>
+                            <div class="modal fade" data-id="{{$item->id}}" id="exampleModal" tabindex="-1"
+                                 role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" data-id="{{$item->id}}" role="document">
+                                    <div class="modal-content">
+                                        <br>
+                                        <h5 class="modal-title" id="exampleModalLabel"><b>
+                                                List Subject
+                                            </b>
+                                        </h5>
+                                        <form id="form_update" method="post">
+                                            <div class="modal-body">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr style=" text-align: left">
+                                                        <th scope="col">#</th>
+                                                        <th scope="col" class="text-center">Name</th>
+                                                        <th scope="col">Mark</th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody id="table-subject">
+                                                    <div class="col">
+
+                                                    </div>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn-outline-danger btn btn-sm"
+                                                        data-dismiss="modal">Close
+                                                </button>
+                                                <button type="submit" id="update"
+                                                        class="btn btn-outline-success btn-sm">Update
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         @if($item->subjects->count() == 0)
-                            <td class="text-sm text-warning text-sm-center"> Haven't Registered</td>
+                            <td class="text-sm text-info text-sm-center"> Haven't Registered</td>
                         @elseif($item->subjects->count() < $countSubject)
                             <td class="text-sm text-success text-sm-center"> Studying</td>
                         @else
@@ -106,14 +213,14 @@
                         @endif
                         <td class="text-center">
                             @can('edit')
-                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}" >
+{{--                                                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}">--}}
+{{--                                                                    <i class="fa fa-edit"></i>--}}
+{{--                                                                </a>--}}
+                                <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
                                     <i class="fa fa-edit"></i>
                                 </a>
-{{--                                <a style="color: #febc06" href="" onclick="update({{ $item->id }})"--}}
-{{--                                   data-bs-toggle="modal"--}}
-{{--                                   data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">--}}
-{{--                                    <i class="fa fa-edit"></i>--}}
-{{--                                </a>--}}
                             @endcan
                             @can('delete')
                                 <a style="color: red" href="{{ route('students.destroy', $item->id) }}"
@@ -141,54 +248,11 @@
             </form>
             <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
             <script src="{{asset('dist/js/edit_student.js')}}"></script>
-            <script>
-                $('.btnDelete').click(function (e) {
-                    e.preventDefault();
-                    var href = $(this).attr('href');
-                    $('#form-delete').attr('action', href);
-                    if (confirm('Are you sure?')) {
-                        $('#form-delete').submit();
-                    }
-                });
-            </script>
         </div>
-        <style>
-            .gradient-button {
-                margin: 5px;
-                font-family: "Arial Black", Gadget, sans-serif;
-                font-size: 20px;
-                padding: 5px;
-                text-align: center;
-                text-transform: uppercase;
-                transition: 0.5s;
-                background-size: 200% auto;
-                color: #FFF;
-                box-shadow: 0 0 20px #eee;
-                border-radius: 10px;
-                width: 42px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-                transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-                cursor: pointer;
-                display: inline-block;
-                border-radius: 55px;
-            }
-
-            .gradient-button-3 {
-                background-image: linear-gradient(to right, #7474BF 0%, #348AC7 51%, #7474BF 100%)
-            }
-
-            .gradient-button-3:hover {
-                background-position: right center;
-            }
-
-            .width {
-                width: 50px;
-            }
-        </style>
+        <link href="{{asset('dist/css/btn-css.css')}}" rel="stylesheet">
         <div>
             {{ $students->links() }}
         </div>
-
         <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;"
              aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
@@ -206,9 +270,6 @@
 
                                     {!! Form::label('', 'Phone number ')!!}
                                     {!! Form::text('phone' ,'', ['class' => 'form-control' , 'id' => 'phoneStudent'])!!}
-
-                                    {!! Form::label('', 'Faculty')!!}
-                                    {!!Form::select('faculty_id', $faculties,'', ['id' => 'faculty_id', 'class' => 'form-control'])!!}
 
                                     {!! Form::label('', 'Address Student')!!}
                                     {!! Form::text('address' ,'', ['class' => 'form-control' , 'id' => 'addressStudent'])!!}
@@ -261,4 +322,3 @@
         </style>
     </div>
 @endsection
-

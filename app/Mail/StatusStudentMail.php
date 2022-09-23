@@ -11,15 +11,16 @@ class StatusStudentMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $result;
+    protected $flag;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($result)
+    public function __construct($flag)
     {
-        $this->result = $result;
+        $this->$flag = $flag;
     }
 
     /**
@@ -29,10 +30,6 @@ class StatusStudentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.StatusStudentEmail')
-            ->subject('ALO ALO ALO ALO')
-            ->with([
-                'result' => $this->result,
-            ]);
+        return $this->view('mail.StatusStudentEmail', compact($this->flag));
     }
 }

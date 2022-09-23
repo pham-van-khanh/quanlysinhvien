@@ -12,6 +12,11 @@ class Student extends Model
 
     protected $fillable = ['name', 'faculty_id', 'code', 'user_id', 'email', 'avatar', 'phone', 'birthday', 'address', 'gender'];
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
     public function faculty()
     {
         return $this->belongsTo(Faculty::class);

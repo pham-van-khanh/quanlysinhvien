@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 
 class StudentRepository extends BaseRepository implements StudentRepositoryInterface
 {
+
     /**
      * @return mixed
      */
@@ -24,13 +25,13 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             ->select('id', 'name', 'faculty_id', 'email', 'avatar', 'birthday', 'phone', 'created_at', 'updated_at')
             ->with('faculty')
             ->withTrashed()
-            ->orderBy('updated_at', 'DESC')->paginate(5);
+            ->orderBy('updated_at', 'DESC')->paginate();
     }
 
     public function search($data)
     {
         $student = $this->model->newQuery();
-
+        $page = Config::get('constants.options.paginateStudent');
         if (isset($data['age_from'])) {
             $student->whereYear('birthday', '<=', Carbon::now()->subYear($data['age_from'])->format('Y'));
         }
@@ -38,7 +39,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         if (isset($data['age_to'])) {
             $student->whereYear('birthday', '>=', Carbon::now()->subYear($data['age_to'])->format('Y'));
         }
-        return $student->withTrashed()->paginate(5);
+        return $student->orderBy('updated_at', 'DESC')->paginate($page);
     }
 
     public function getStudentDeleted()
@@ -48,12 +49,13 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
 
     public function getStudent()
     {
-        return $this->model->where('user_id',Auth::user()->id)->first();
-
+        return $this->model->where('user_id', Auth::user()->id)->first();
     }
 
     public function getStudentById()
     {
         return $this->model->where('user_id', Auth::id())->first()->id;
     }
+
+
 }

@@ -25,7 +25,7 @@ class StudentRequest extends FormRequest
     {
         if ($this->route('student')) {
             return [
-                'name' => 'required|regex:/^[A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+([\ A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+)*/u' . $this->route('student'),
+                'name' => 'required' . $this->route('student'),
                 'email' => 'required|min:10|unique:students,email' . $this->route('student'),
                 'user_id' => 'min:1|max:1000000|unique:students,user_id' . $this->route('student'),
                 'phone' => 'required|min:10|max:12|unique:students,phone' . $this->route('student'),
@@ -37,7 +37,7 @@ class StudentRequest extends FormRequest
             ];
         }
         return [
-            'name' => 'required|regex:/^[A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+([\ A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+)*/u',
+            'name' => 'required',
             'email' => 'required|min:10|unique:students,email',
             'avatar' => 'image',
             'user_id' => 'min:1|max:1000000|unique:students,user_id',

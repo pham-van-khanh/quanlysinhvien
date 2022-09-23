@@ -10,7 +10,6 @@ function update(id) {
     $.get('students/' + id + '/edit', function (data) {
         console.log(data);
         $('#nameStudent').val(data.student.name);
-        $('#faculty_id').val(data.student.faculty_id);
         $('#phoneStudent').val(data.student.phone);
         $('#emailStudent').val(data.student.email);
         $('#addressStudent').val(data.student.address);
@@ -32,7 +31,6 @@ function saveUpdate() {
     var address = $('#addressStudent').val();
     var gender = $('#genderStudent').val();
     var birthday = $('#birthdayStudent').val();
-    var faculty_id = $('#faculty_id').val();
     var id = $('#student_id').val();
     $.ajax({
         url: 'students/' + id,

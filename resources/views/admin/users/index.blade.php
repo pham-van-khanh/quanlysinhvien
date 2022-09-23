@@ -1,12 +1,11 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Students')
-@section('title', 'List Students')
-@section('danh-muc', 'List Students')
+@section('content-title', 'List User')
+@section('title', 'List User')
 @section('content')
 
-   <div class="col-2">
-       <a href="{{ route('users.create') }}" class="btn btn-info btn-sm"> Add Users </a>
-   </div>
+    <div class="col-2">
+        <a href="{{ route('users.create') }}" class="btn btn-info btn-sm"> Add Users </a>
+    </div>
     <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -17,7 +16,7 @@
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time Create</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
 
-                    <th></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,18 +33,15 @@
                             {{ $item->created_at }}
                         </td>
                         <td>
-                            @if(!empty($item->getRoleNames()))
-                                @foreach($item->getRoleNames() as $v)
-                                    <label class="text-sm-center">{{ $v }}</label>
-                                @endforeach
-                            @endif
+{{--                            @if(!empty($item->getRoleNames()))--}}
+{{--                                @foreach($item->getRoleNames() as $v)--}}
+{{--                                    <label class="text-sm-center">{{ $v }}</label>--}}
+{{--                                @endforeach--}}
+{{--                            @endif--}}
                         </td>
                         <td>
                             <a class="btn btn-warning btn-sm" href="{{ route('users.show', $item->id) }}">Show</a>
                             <a class="btn btn-primary btn-sm" href="{{ route('users.edit', $item->id) }}">Edit</a>
-                            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $item->id], 'style'=>'display:inline']) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                            {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach
