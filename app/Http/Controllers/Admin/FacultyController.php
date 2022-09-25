@@ -8,6 +8,7 @@ use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use App;
 
 class FacultyController extends Controller
 {
@@ -28,6 +29,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
+        $locale = App::currenLocale();
         $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
         return view('admin.faculties.index', compact('faculties', 'student'));

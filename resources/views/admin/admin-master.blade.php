@@ -97,7 +97,6 @@
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-
                     </div>
                     <ul class="navbar-nav  justify-content-end">
                         <li class="nav-item dropdown">
@@ -131,6 +130,26 @@
                             </a>
                         </li>
                     </ul>
+
+                    <ul class="navbar-nav  justify-content-end">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                               <i class="fa fa-language" aria-hidden="true"> @lang('welcome.title') </i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end-sm" aria-labelledby="navbarDropdown">
+                                <a style="font-size: 15px" class="dropdown-item" href="{{ url('lang/vn') }}">
+                                    @lang('welcome.vietnam_language')
+                                </a>
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-end-sm" aria-labelledby="navbarDropdown">
+                                <a style="font-size: 15px" class="dropdown-item" href="{{ url('lang/en') }}">
+                                    @lang('welcome.english_language')
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
         </nav>

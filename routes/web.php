@@ -9,6 +9,7 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,17 @@ Route::get('show-subject/{id}', [StudentController::class, 'showSubject'])->name
 Route::post('updateMark/{student}',[SubjectController::class, 'updateMark'])->name('updateMark');
 Route::get('client', function () {
     return view('layouts.client');
+});
+
+Route::get('/greeting/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'vn'])) {
+        abort(400);
+    }
+ 
+    App::setLocale($locale);
+    Session::put('locale', $locale);
+    return redirect()->back();
+    //
 });
 
 Auth::routes();
