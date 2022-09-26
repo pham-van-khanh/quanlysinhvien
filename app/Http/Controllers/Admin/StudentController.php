@@ -14,6 +14,7 @@ use App\Repositories\Subjects\SubjectRepositoryInterface;
 use App\Repositories\Users\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -51,6 +52,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        $locale = App::currentLocale();
         $student = Student::all();
         $avg = $this->avg::get('constants.options.avg');
         $students = $this->studentRepository->search($request->all());

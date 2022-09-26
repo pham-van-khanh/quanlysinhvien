@@ -11,6 +11,7 @@ use App\Models\Student;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
@@ -35,6 +36,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
+        $locale = App::currentLocale();
         $subjects = $this->subjectRepository->subjectList()->Paginate(5);
         $admin = Config::get('constants.options.roleAdmin');
         $roleStudent = Config::get('constants.options.roleStudent');

@@ -8,8 +8,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,9 +77,8 @@ Route::get('client', function () {
 
 Route::get('/greeting/{locale}', function ($locale) {
     if (! in_array($locale, ['en', 'vn'])) {
-        abort(400);
+        abort(401);
     }
- 
     App::setLocale($locale);
     Session::put('locale', $locale);
     return redirect()->back();

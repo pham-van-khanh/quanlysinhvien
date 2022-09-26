@@ -1,7 +1,6 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Students')
-@section('title', 'List Students')
-@section('danh-muc', 'List Students')
+@section('content-title', __('welcome.list-role'))
+@section('title', __('welcome.list-role'))
 @section('content')
 
     <form action="">
@@ -16,12 +15,11 @@
             <table class="table align-items-center mb-0">
                 <thead>
                     <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stt</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')</th>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                             <a href="{{ route('roles.create') }}" class="btn btn-info btn-sm"> Add Role </a>
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

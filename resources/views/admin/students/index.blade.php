@@ -1,21 +1,21 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Students')
-@section('title', 'List Students')
+@section('content-title', __('welcome.list-student'))
+@section('title', __('welcome.list-student'))
 @section('content')
     <div class="container">
         <form action="{{route('students.index')}}" method="get">
             <div class="row">
                 <div class="col-sm-3">
-                    <label class="form-label" for="form3Example1">Age From</label>
+                    <label class="form-label" for="form3Example1">@lang('welcome.col-age-from')</label>
                     <input type="number" class="form-control input-sm" id="fromOld" name="age_from" require>
                 </div>
                 <div class="col-sm-3">
-                    <label class="form-label" for="form3Example1">Age to</label>
+                    <label class="form-label" for="form3Example1">@lang('welcome.col-age-to')</label>
                     <input type="number" class="form-control input-sm" id="toOld" name="age_to" require>
                 </div>
                 <div class="col-sm-3">
                     <button style="margin-top: 35px" type="submit" class="btn btn-outline-success btn-sm" name="search">
-                        Filter
+                        @lang('welcome.filter')
                     </button>
                 </div>
             </div>
@@ -23,61 +23,62 @@
     </div>
     <div class="col-2 flex-md-grow-1">
         @can('create')
-            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#create-bookmark"> Add Student</button>
+            <button class="btn btn-info btn-sm" data-toggle="modal"
+                    data-target="#create-bookmark"> @lang('welcome.act-create')</button>
         @endcan
     </div>
     <div class="modal fade modal-bookmark" id="create-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Create Student</h5>
+                    <h5 class="modal-title">@lang('welcome.act-create') @lang('welcome.student')</h5>
                 </div>
                 <div class="modal-body">
                     {{ Form::model($student, ['method' => 'POST']) }}
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            {!!Form::label('', 'Name student')!!}
-                            {!!Form::text('name', '',['class' => 'form-control' ,'id' => 'name_student','placeholder' => 'Enter name student'])!!}
+                            {!!Form::label('', __('welcome.col-name'))!!}
+                            {!!Form::text('name', '',['class' => 'form-control' ,'id' => 'name_student','placeholder' => __('welcome.col-name')])!!}
                             <div class="invalid-feedback validate-name"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            {!!Form::label('', 'Email student')!!}
-                            {!!Form::email('email', '',['class' => 'form-control' ,'id' => 'email_student','placeholder' => 'Enter email student'])!!}
+                            {!!Form::label('', __('welcome.col-email'))!!}
+                            {!!Form::email('email', '',['class' => 'form-control' ,'id' => 'email_student','placeholder' => __('welcome.col-email')])!!}
                             <div class="invalid-feedback validate-email"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            {!!Form::label('', 'Phone number student')!!}
-                            {!!Form::text('phone', '',['class' => 'form-control' ,'id' => 'phone_student','placeholder' => 'Enter phone student'])!!}
+                            {!!Form::label('', __('welcome.col-phone'))!!}
+                            {!!Form::text('phone', '',['class' => 'form-control' ,'id' => 'phone_student','placeholder' => __('welcome.col-phone')])!!}
                             <div class="invalid-feedback validate-phone"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            {!!Form::label('', 'Birthday student')!!}
-                            {!!Form::date('birthday', '',['class' => 'form-control' ,'id' => 'birthday_student','placeholder' => 'Enter birthday student'])!!}
+                            {!!Form::label('', __('welcome.col-birthday'))!!}
+                            {!!Form::date('birthday', '',['class' => 'form-control' ,'id' => 'birthday_student','placeholder' => __('welcome.col-birthday')])!!}
                             <div class="invalid-feedback validate-birthday"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            {!!Form::label('', 'Address student')!!}
-                            {!!Form::text('address', '',['class' => 'form-control' ,'id' => 'address_student','placeholder' => 'Enter address student'])!!}
+                            {!!Form::label('', __('welcome.col-address'))!!}
+                            {!!Form::text('address', '',['class' => 'form-control' ,'id' => 'address_student','placeholder' => __('welcome.col-address')])!!}
                             <div class="invalid-feedback validate-address"></div>
                         </div>
                         <div class="form-group col-md-12">
-                            {{ Form::label('', 'Gender', ['class' => 'col-form-label pt-0']) }}
+                            {{ Form::label('', __('welcome.col-gender'), ['class' => 'col-form-label pt-0']) }}
                             <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                                 <div class="radio radio-primary">
                                     {{Form::radio('gender', '0', true, ['class' => 'form-check-input', 'id' => 'radioinline11'])}}
-                                    {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
+                                    {{ Form::label('radioinline11', __('welcome.row-male'), ['class' => 'mb-0']) }}
                                 </div>
                                 <div class="radio radio-primary">
                                     {{Form::radio('gender', '1', false, ['class' => 'form-check-input', 'id' => 'radioinline22'])}}
-                                    {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
+                                    {{ Form::label('radioinline22', __('welcome.row-female'), ['class' => 'mb-0']) }}
                                 </div>
                                 <div class="invalid-feedback validate-gender"></div>
                             </div>
                         </div>
                     </div>
                     <br>
-                    {!! Form::submit('Save', ['class' => 'btn btn-secondary','id' => 'saveCreateForm'])!!}
-                    {!! Form::button('Cancel', ['class' => 'btn btn-primary','data-bs-dismiss' => 'modal'])!!}
+                    {!! Form::submit(__('welcome.act-submit'), ['class' => 'btn btn-secondary','id' => 'saveCreateForm'])!!}
+                    {!! Form::button(__('welcome.act-close'), ['class' => 'btn btn-primary', 'data-bs-dismiss' => 'modal'])!!}
                     {!! Form::close() !!}
                 </div>
                 {!!Form::hidden('student_id', '',['id' => 'student_id'])!!}
@@ -102,26 +103,25 @@
                 <thead>
                 <tr>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Stt
+                        @lang('welcome.col-#')
                     </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Avatar
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')</th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-avatar')
                     </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Name
-                        Faculty
-                    </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Learned
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-faculty')
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Show Subject
+                        @lang('welcome.col-learned')
                     </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">AVG
-                        Point
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        @lang('welcome.col-lst-subject')
+                    </th>
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                        @lang('welcome.col-point')
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
                         <a href="{{ route('student-list-deleted') }}"
-                           class="btn btn-secondary btn-sm"> Deleted Student </a>
+                           class="btn btn-secondary btn-sm"> @lang('welcome.col-deleted-student') </a>
                     </th>
                 </tr>
                 </thead>
@@ -141,7 +141,7 @@
                             @if(isset($item->faculty))
                                 {{ $item->faculty->name }}
                             @else
-                                <b class="text-danger">Registered Any Faculties! </b>
+                                <b class="text-danger"> @lang('welcome.row-register-faculty') </b>
                             @endif
                         </td>
                         <td class="text-center">
@@ -159,7 +159,7 @@
                                     <div class="modal-content">
                                         <br>
                                         <h5 class="modal-title" id="exampleModalLabel"><b>
-                                                List Subject
+                                                @lang('welcome.list-subject')
                                             </b>
                                         </h5>
                                         <form id="form_update" method="post">
@@ -168,8 +168,9 @@
                                                     <thead>
                                                     <tr style=" text-align: left">
                                                         <th scope="col">#</th>
-                                                        <th scope="col" class="text-center">Name</th>
-                                                        <th scope="col">Mark</th>
+                                                        <th scope="col"
+                                                            class="text-center">@lang('welcome.col-name')</th>
+                                                        <th scope="col">@lang('welcome.col-point')</th>
                                                     </tr>
                                                     </thead>
 
@@ -182,10 +183,10 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn-outline-danger btn btn-sm"
-                                                        data-dismiss="modal">Close
+                                                        data-dismiss="modal">@lang('welcome.act-close')
                                                 </button>
                                                 <button type="submit" id="update"
-                                                        class="btn btn-outline-success btn-sm">Update
+                                                        class="btn btn-outline-success btn-sm">@lang('welcome.act-submit')
                                                 </button>
                                             </div>
                                         </form>
@@ -194,13 +195,13 @@
                             </div>
                         </td>
                         @if($item->subjects->count() == 0)
-                            <td class="text-sm text-info text-sm-center"> Haven't Registered</td>
+                            <td class="text-sm text-info text-sm-center"> @lang('welcome.row-register-subject') </td>
                         @elseif($item->subjects->count() < $countSubject)
-                            <td class="text-sm text-success text-sm-center"> Studying</td>
+                            <td class="text-sm text-success text-sm-center"> @lang('welcome.row-studying') </td>
                         @else
                             @for($i=0; $i < $countSubject; $i++)
                                 @if(!$item->subjects[$i]->pivot->mark)
-                                    <td class="text-sm text-center text-success text-sm-center"> Studying</td>
+                                    <td class="text-sm text-center text-success text-sm-center"> @lang('welcome.row-studying') </td>
                                     @break
                                 @elseif($i == $countSubject - 1)
                                     @if(round($item->subjects->avg('pivot.mark'), 2) < $avg)
@@ -213,9 +214,9 @@
                         @endif
                         <td class="text-center">
                             @can('edit')
-{{--                                                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}">--}}
-{{--                                                                    <i class="fa fa-edit"></i>--}}
-{{--                                                                </a>--}}
+                                {{--                                                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}">--}}
+                                {{--                                                                    <i class="fa fa-edit"></i>--}}
+                                {{--                                                                </a>--}}
                                 <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
                                    data-bs-toggle="modal"
                                    data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
@@ -233,7 +234,7 @@
                 @endforeach
             </table>
             {{ Form::model($students, ['route' => ['mail_subjects_all'], 'method' => 'get'])}}
-            <button type="submit" class="btn btn-outline-warning btn-sm"
+            <button data-bs-toggle="tooltip" data-bs-placement="right" title="Send Mail All Student" type="submit" class="btn btn-outline-warning btn-sm"
                     onclick="return confirm('Do you want send to student?')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
@@ -258,58 +259,58 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Student</h5>
+                        <h5 class="modal-title">@lang('welcome.act-update') @lang('welcome.student')</h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form class="form-bookmark needs-validation" novalidate="">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    {!! Form::label('', 'Name')!!}
+                                    {!! Form::label('', __('welcome.col-name'))!!}
                                     {!! Form::text('name' ,'', ['class' => 'form-control' , 'id' => 'nameStudent'])!!}
 
-                                    {!! Form::label('', 'Phone number ')!!}
+                                    {!! Form::label('', __('welcome.col-phone'))!!}
                                     {!! Form::text('phone' ,'', ['class' => 'form-control' , 'id' => 'phoneStudent'])!!}
 
-                                    {!! Form::label('', 'Address Student')!!}
+                                    {!! Form::label('', __('welcome.col-address'))!!}
                                     {!! Form::text('address' ,'', ['class' => 'form-control' , 'id' => 'addressStudent'])!!}
 
-                                    {{ Form::label('', 'Gender', ['class' => 'col-form-label pt-0']) }}
+                                    {{ Form::label('', __('welcome.col-gender'), ['class' => 'col-form-label pt-0']) }}
                                     <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                                         @if ($errors->first('gender'))
                                             <div class="radio radio-primary">
                                                 {{Form::radio('gender', '0', true, ['class' => 'form-check-input is-invalid', 'id' => 'radioinline11'])}}
-                                                {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
+                                                {{ Form::label('radioinline11', __('welcome.row-male'), ['class' => 'mb-0']) }}
                                             </div>
                                             <div class="radio radio-primary">
                                                 {{Form::radio('gender', '1', false, ['class' => 'form-check-input is-invalid', 'id' => 'radioinline22'])}}
-                                                {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
+                                                {{ Form::label('radioinline22', __('welcome.row-female'), ['class' => 'mb-0']) }}
                                             </div>
                                             <div class="invalid-feedback">{{$errors->first('gender')}}</div>
                                         @else
                                             <div class="radio radio-primary">
                                                 {{Form::radio('gender', '0', true, ['class' => 'form-check-input', 'id' => 'radioinline11'])}}
-                                                {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
+                                                {{ Form::label('radioinline11', __('welcome.row-male'), ['class' => 'mb-0']) }}
                                             </div>
                                             <div class="radio radio-primary">
                                                 {{Form::radio('gender', '1', false, ['class' => 'form-check-input', 'id' => 'radioinline22'])}}
-                                                {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
+                                                {{ Form::label('radioinline22', __('welcome.row-female'), ['class' => 'mb-0']) }}
                                             </div>
                                         @endif
                                     </div>
-                                    {!! Form::label('', 'Birthday student')!!}
+                                    {!! Form::label('', __('welcome.col-birthday'))!!}
                                     {!! Form::date('birthday', '', ['class' => 'form-control' , 'id' => 'birthdayStudent'])!!}
 
-                                    {!! Form::label('', 'Email')!!}
+                                    {!! Form::label('', __('welcome.col-email'))!!}
                                     {!! Form::text('email' ,'', ['class' => 'form-control' , 'id' => 'emailStudent', 'readonly'])!!}
                                 </div>
                             </div>
                             <input type="hidden" name="student_id" id="student_id">
                             <br>
                             <button class="btn btn-secondary" type="button" id="saveUpdateForm" onclick="saveUpdate()">
-                                Save
+                                @lang('welcome.act-submit')
                             </button>
-                            <button class="btn btn-primary" type="button">Cancel</button>
+                            <button class="btn btn-primary" data-bs-dismiss="modal"  type="button"> @lang('welcome.act-close')</button>
                         </form>
                     </div>
                 </div>

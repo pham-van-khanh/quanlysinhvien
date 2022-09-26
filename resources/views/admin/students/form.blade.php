@@ -1,6 +1,6 @@
 @extends('admin.admin-master')
-@section('title', 'Student')
-@section('content-title', ' Student')
+@section('title', __('welcome.act-create'). ' '.  __('welcome.student'))
+@section('content-title', __('welcome.act-create'). ' '.  __('welcome.student'))
 @section('content')
     @if($student->id)
         {{ Form::model($student, array('method' => 'PUT', 'route' => ['students.update', $student->id])) }}

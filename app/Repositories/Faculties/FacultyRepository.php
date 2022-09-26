@@ -21,6 +21,6 @@ class   FacultyRepository extends BaseRepository implements FacultyRepositoryInt
     public function facultyList()
     {
         return $this->model->select('id', 'name', 'updated_at', 'created_at')
-            ->orderBy('updated_at', 'DESC')->paginate(4);
+            ->orderBy('updated_at', 'DESC')->paginate(10);
     }
 }

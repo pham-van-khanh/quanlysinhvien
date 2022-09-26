@@ -1,6 +1,6 @@
 @extends('admin.admin-master')
-@section('title', 'Faculty')
-@section('content-title', ' Faculty')
+@section('title', __('welcome.act-create'). ' '.  __('welcome.faculty'))
+@section('content-title', __('welcome.act-create'). ' '.  __('welcome.faculty'))
 @section('content')
     @if($faculty->id)
         {{ Form::model($faculty, array('method' => 'PUT', 'route' => ['faculties.update', $faculty->id])) }}
@@ -10,17 +10,18 @@
     <div class="row mb-4">
         <div class="col">
             <div class="form-outline">
-                {{ Form::label('name', 'Name Faculty') }}
+                {{ Form::label('name', __('welcome.col-name')) }}
                 {{ Form::text('name', $faculty->name, ['class'=>'form-control']) }}
+                <h8 class="text-danger">{{ $errors->first('name') }}</h8>
             </div>
         </div>
     </div>
-    {{ Form::submit('Submit', ['class'=>'btn btn-success'] )}}
+    {{ Form::submit( __('welcome.act-submit'), ['class'=>'btn btn-primary btn-sm'] )}}
     {{ Form::close() }}
 
     @if($faculty->id)
         {{ Form::model($faculty, array('route' => ['faculties.destroy', $faculty->id], 'method' => 'DELETE'))}}
-        {{ Form::submit('Delete', ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"])}}
+        {{ Form::submit(__('welcome.act-delete'), ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"])}}
         {{ Form::close() }}
     @endif
     {{ Form::close() }}

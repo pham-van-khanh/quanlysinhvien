@@ -1,11 +1,11 @@
 @extends('admin.admin-master')
-@section('content-title', 'List Faculty')
-@section('title', 'List Faculty')
+@section('content-title', __('welcome.list-faculty') )
+@section('title', __('welcome.list-faculty'))
 @section('content')
     <div class="col-2 flex-md-grow-1">
         @can('create')
             <a href="{{ route('faculties.create') }}"
-               class="btn btn-info btn-sm"> Add Faculty </a>
+               class="btn btn-info btn-sm"> @lang('welcome.act-create') </a>
         @endcan
     </div>
 
@@ -14,16 +14,15 @@
             <table class="table align-items-center mb-0">
                 <thead>
                 <tr>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Stt</th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-name')
                     </th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time
-                        Create
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-time')
                     </th>
                     <th></th>
                     <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">
                         @if(Auth::user()->roles[0]->name == $student)
-                            Register Faculty
+                           @lang('welcome.act-register')
                         @endif
                     </th>
                 </tr>

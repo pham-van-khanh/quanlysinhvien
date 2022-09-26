@@ -1,34 +1,34 @@
 @extends('admin.admin-master')
-@section('title', 'List Subjects')
-@section('content-title', 'List Subjects')
+@section('title', __('welcome.list-subject'))
+@section('content-title', __('welcome.list-subject'))
 @section('content')
     <div class="col-2 flex-md-grow-1">
         @can('create')
             <a href="{{ route('subjects.create') }}"
-               class="btn btn-info btn-sm"> Add Subject </a>
+               class="btn btn-info btn-sm"> @lang('welcome.act-create') </a>
         @endcan
     </div>
     <div class="card-body px-0 pb-0">
         <table class="table table-responsive-sm">
             <thead>
             <tr>
-                <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">Stt</th>
-                <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">Name
+                <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')
                 </th>
                 @if(Auth::user()->roles[0]->name == $admin)
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Action
+                        @lang('welcome.col-act')
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Update Mark Student
+                        @lang('welcome.act-update-point')
                     </th>
                 @else
                     <th></th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        Point
+                        @lang('welcome.col-point')
                     </th>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        registration
+                        @lang('welcome.act-register')
                     </th>
                 @endif
             </tr>
@@ -62,7 +62,7 @@
                                 @for($i = 0; $i < $studentSubject->count(); $i++)
                                     @if($subject->id == $studentSubject[$i]->id)
                                         @if(!$studentSubject[$i]->pivot->mark)
-                                            <td class="text-success text-sm text-center"> Studying</td>
+                                            <td class="text-success text-sm text-center">@lang('welcome.row-studying')</td>
                                             <td class="text-center "><input disabled type="checkbox" checked></td>
                                         @else
                                             <td class="text-center">{{$studentSubject[$i]->pivot->mark}}/10</td>

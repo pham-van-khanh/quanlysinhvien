@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
-use App;
 
 class FacultyController extends Controller
 {
@@ -29,7 +29,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $locale = App::currenLocale();
+        $locale = App::currentLocale();
         $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
         return view('admin.faculties.index', compact('faculties', 'student'));
@@ -54,7 +54,6 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-
         $data = $this->facultyRepository->create($request->all());
         Session::flash('success', 'Create Faculty Successful');
         return redirect()->route('faculties.index');
