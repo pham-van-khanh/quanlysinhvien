@@ -32,11 +32,11 @@
                             {{ $item->created_at }}
                         </td>
                         <td>
-                            {{--                            @if(!empty($item->getRoleNames()))--}}
-                            {{--                                @foreach($item->getRoleNames() as $v)--}}
-                            {{--                                    <label class="text-sm-center">{{ $v }}</label>--}}
-                            {{--                                @endforeach--}}
-                            {{--                            @endif--}}
+                            @if(!empty($item->getRoleNames()))
+                                @foreach($item->getRoleNames() as $v)
+                                    <label class="text-sm-center">{{ $v }}</label>
+                                @endforeach
+                            @endif
                         </td>
                         <td>
                             <a class="btn btn-warning btn-sm"
@@ -54,47 +54,4 @@
         <div>
             {{ $data->links() }}
         </div>
-        <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Cập nhật</h5>
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-bookmark needs-validation" novalidate="">
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label>Name Student</label>
-                                    <input class="form-control" id="nameStudent" name="name" type="text"
-                                           required="" autocomplete="off" value="">
-                                    <label>Phone Student</label>
-                                    <input class="form-control" id="phoneStudent" name="phone" type="text"
-                                           required="" autocomplete="off" value="">
-                                    <label>Address Student</label>
-                                    <input class="form-control" id="addressStudent" name="address" type="text"
-                                           required="" autocomplete="off" value="">
-                                    <label>Gender Student</label>
-                                    <input class="form-control" id="genderStudent" name="gender" value type="text"
-                                           required="" autocomplete="off" value="1">
-                                    <label>Email Student</label>
-                                    <input class="form-control" id="emailStudent" name="email" type="text"
-                                           required="" autocomplete="off" value="">
-
-                                </div>
-                            </div>
-                            <input type="hidden" name="student_id" id="student_id">
-                            <br>
-                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" id="saveUpdate"
-                                    onclick="saveUpdate()">Save
-                            </button>
-                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Cancel</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="{{ asset('dist/js/js.js') }}"
 @endsection
