@@ -140,12 +140,15 @@
                             @lang('welcome.title')
                         </a>
                         <div class="dropdown-menu dropdown-menu-end-sm" aria-labelledby="navbarDropdown">
-                            <a style="font-size: 15px" class="dropdown-item" href="{{ url('greeting/en') }}">
-                                @lang('welcome.english_language')
-                            </a>
-                            <a style="font-size: 15px" class="dropdown-item" href="{{ url('greeting/vn') }}">
-                                @lang('welcome.vietnam_language')
-                            </a>
+                            @if( App::currentLocale() == 'vn')
+                                <a style="font-size: 15px" class="dropdown-item" href="{{ url('greeting/en') }}">
+                                    @lang('welcome.english_language')
+                                </a>
+                            @else
+                                <a style="font-size: 15px" class="dropdown-item" href="{{ url('greeting/vn') }}">
+                                    @lang('welcome.vietnam_language')
+                                </a>
+                            @endif
                         </div>
                     </li>
                 </ul>

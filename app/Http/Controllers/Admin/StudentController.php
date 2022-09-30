@@ -53,7 +53,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $locale = App::currentLocale();
-        $student = Student::all();
+        $student = $this->studentRepository->getStudents();
         $avg = $this->avg::get('constants.options.avg');
         $students = $this->studentRepository->search($request->all());
         $countSubject = $this->subjectRepository->count();
@@ -130,7 +130,6 @@ class StudentController extends Controller
         return response()->json([
             'student' => $student,
             'id' => $student->id,
-            'faculty_id' => $student->faculty_id
         ]);
     }
 
@@ -141,12 +140,11 @@ class StudentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StudentRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $student = $this->studentRepository->update($id, $data);
-        Session::flash('success', 'Update Successful');
-        return redirect()->route('students.index');
+        $this->studentRepository->find($id)->update($request->all());
+        $student = $this->studentRepository->find($id);
+        return response()->json(['data' => $student, 'student' => $request->all(), 'studentid' => $id, 'message' => 'Cập nhật thông tin sinh viên thành công'], 200);
     }
 
     /**
@@ -175,6 +173,7 @@ class StudentController extends Controller
     public function restore($id)
     {
         $model = $this->studentRepository->find($id);
+        dd($model);
         $model->restore();
         Session::flash('success', 'Restore Student Successful');
         return redirect()->route('students.index');

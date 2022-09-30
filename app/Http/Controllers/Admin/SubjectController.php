@@ -112,8 +112,7 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $subject = $this->subjectRepository->update($id, $data);
+        $this->subjectRepository->update($id, $request->all());
         Session::flash('success', 'Update Successful');
         return redirect()->route('subjects.index');
     }
@@ -136,18 +135,18 @@ class SubjectController extends Controller
         return redirect()->route('subjects.index');
     }
 
-    public function mail_subjects_all()
+    public function sendMailStudent()
     {
         $subjects = $this->subjectRepository->getAll();
         $students = $this->studentRepository->getStudents();
         foreach ($students as $student) {
             if ($student->subjects->count() !== $subjects->count()) {
-                $getStudentLearned[] = $student->id;
+                $learnedStudentIds[] = $student->id;
             }
         }
-        foreach ($getStudentLearned as $value) {
+        foreach ($learnedStudentIds as $learnedStudentId) {
             $listSubject = [];
-            $student = $this->studentRepository->find($value);
+            $student = $this->studentRepository->find($learnedStudentId);
             $subject_point = $student->subjects;
             if ($subject_point->count() == 0) {
                 $listSubject = $subjects;
@@ -193,6 +192,7 @@ class SubjectController extends Controller
     public function updateMark(Request $request, $student)
     {
         $student = $this->studentRepository->find($student);
+//        $student->subjects()->sync([$student => $request->mark]);
         $students = $student->subjects;
         for ($i = 0; $i < $students->count(); $i++) {
             if ($request->mark[$i] != 'null') {

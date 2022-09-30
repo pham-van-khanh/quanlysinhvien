@@ -127,11 +127,11 @@
                 </thead>
                 <tbody>
                 @foreach ($students as $index => $item)
-                    <tr>
-                        <td id="id" class="text-center">
+                    <tr id="id{{$item->id}}">
+                        <td class="text-center">
                             {{ $index + 1 }}
                         </td>
-                        <td id="name">
+                        <td id="col-name">
                             {{ $item->name }}
                         </td>
                         <td class="text-center">
@@ -234,7 +234,8 @@
                 @endforeach
             </table>
             {{ Form::model($students, ['route' => ['mail_subjects_all'], 'method' => 'get'])}}
-            <button data-bs-toggle="tooltip" data-bs-placement="right" title="Send Mail All Student" type="submit" class="btn btn-outline-warning btn-sm"
+            <button data-bs-toggle="tooltip" data-bs-placement="right" title="Send Mail All Student" type="submit"
+                    class="btn btn-outline-warning btn-sm"
                     onclick="return confirm('Do you want send to student?')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
@@ -250,7 +251,7 @@
             <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
             <script src="{{asset('dist/js/edit_student.js')}}"></script>
         </div>
-        <link href="{{asset('dist/css/btn-css.css')}}" rel="stylesheet">
+        <link href="{{asset('dist/css/btn_css.css')}}" rel="stylesheet">
         <div>
             {{ $students->links() }}
         </div>
@@ -310,7 +311,8 @@
                             <button class="btn btn-secondary" type="button" id="saveUpdateForm" onclick="saveUpdate()">
                                 @lang('welcome.act-submit')
                             </button>
-                            <button class="btn btn-primary" data-bs-dismiss="modal"  type="button"> @lang('welcome.act-close')</button>
+                            <button class="btn btn-primary" data-bs-dismiss="modal"
+                                    type="button"> @lang('welcome.act-close')</button>
                         </form>
                     </div>
                 </div>

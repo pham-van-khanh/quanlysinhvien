@@ -21,6 +21,7 @@ function update(id) {
 
 var id = $('#student_id').val()
 $('#saveUpdateForm').on('click', function (id) {
+
     saveUpdate(id);
 });
 
@@ -43,16 +44,12 @@ function saveUpdate() {
             address: address,
             birthday: birthday,
             gender: gender,
-            faculty_id: faculty_id
         },
         dataType: 'json',
         success: function (data) {
-            $('#edit-bookmark').removeClass('show');
-            $('#edit-bookmark').css('padding-right', ' ');
-            $('body').removeAttr("style");
-            $('body').removeClass("modal-open");
-            $('#name' + data.student.id).find("td:eq(0)").text(data.student.name);
-            $('body').removeAttr('data-bs-padding-right');
+            $('.modal-backdrop').removeClass('modal-backdrop');
+            $('#edit-bookmark').removeAttr('style');
+            $('#id' + data.student.id).find("td:eq(1)").text(data.student.name);
         }
     })
 }

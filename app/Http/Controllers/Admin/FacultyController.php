@@ -29,7 +29,6 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $locale = App::currentLocale();
         $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
         return view('admin.faculties.index', compact('faculties', 'student'));

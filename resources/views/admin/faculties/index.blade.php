@@ -22,7 +22,7 @@
                     <th></th>
                     <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">
                         @if(Auth::user()->roles[0]->name == $student)
-                           @lang('welcome.act-register')
+                            @lang('welcome.act-register')
                         @endif
                     </th>
                 </tr>
@@ -47,8 +47,7 @@
                             @endcan
                             @can('delete')
                                 <a style="color: red"
-                                   href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}"
-                                   class="btnDelete">
+                                   href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}" class="btnDelete">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             @endcan
@@ -73,15 +72,6 @@
             {{$faculties->links()}}
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script>
-            $('.btnDelete').click(function (e) {
-                e.preventDefault();
-                var href = $(this).attr('href');
-                $('#form-delete').attr('action', href);
-                if (confirm('Are you sure?')) {
-                    $('#form-delete').submit();
-                }
-            });
-        </script>
+        <script src="{{asset('dist/js/edit_student.js')}}"></script>
     </div>
 @endsection

@@ -92,36 +92,12 @@
                     </tr>
                 @endforeach
                 @if(Auth::user()->roles[0]->name == $roleStudent)
-                    {{--                    @foreach($student->subjects as $item)--}}
-                    {{--                        @if('checkbox')--}}
-                    {{--                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
-                    {{--                            @break--}}
-                    {{--                        @elseif($item->pivot->mark)--}}
-                    {{--                            <button type="button" disabled class="btn btn-outline-success btn-sm">GPA--}}
-                    {{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
-                    {{--                            --}}{{--                                @for($i = 0; $i < $item->count(); $i++)--}}
-                    {{--                            --}}{{--                                    @if($i == $subjects->count() - 1)--}}
-                    {{--                            --}}{{--                                      --}}
-                    {{--                            --}}{{--                                    @else--}}
-                    {{--                            --}}{{--                                        {{round($item->subjects->avg('pivot.mark'), 2)}}--}}
-                    {{--                            --}}{{--                                    @endif--}}
-                    {{--                            --}}{{--                                @endfor--}}
-                    {{--                        @endif--}}
 
-
-
-                    {{--                        --}}{{--                        @if($student->subjects->count())--}}
-                    {{--                        --}}{{--                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA--}}
-                    {{--                        --}}{{--                                : {{$student->subjects->avg('pivot.mark')}} </button>--}}
-                    {{--                        --}}{{--                        @else--}}
-                    {{--                        --}}{{--                        <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
-                    {{--                        --}}{{--                        @endif--}}
-                    {{--                    @endforeach--}}
                     @if($student->subjects)
                         @if(!'checkbox')
                             <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA:  </button>
                         @else
-                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
+{{--                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
                         @endif
                     @else
                         2
