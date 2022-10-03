@@ -24,25 +24,25 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
-    protected $studentRepository,
-        $userRepository,
-        $subjectRepository,
-        $facultyRepository,
-        $page,
-        $avg;
+    protected $_studentRepository,
+        $_userRepository,
+        $_subjectRepository,
+        $_facultyRepository,
+        $_page,
+        $_avg;
 
-    public function __construct(StudentRepositoryInterface $studentRepository,
-                                FacultyRepositoryInterface $facultyRepository,
-                                UserRepositoryInterface    $userRepository,
-                                SubjectRepositoryInterface $subjectRepository,
-                                Config                     $page, Config $avg)
+    public function __construct(StudentRepositoryInterface $_studentRepository,
+                                FacultyRepositoryInterface $_facultyRepository,
+                                UserRepositoryInterface    $_userRepository,
+                                SubjectRepositoryInterface $_subjectRepository,
+                                Config                     $_page, Config $_avg)
     {
-        $this->studentRepository = $studentRepository;
-        $this->userRepository = $userRepository;
-        $this->facultyRepository = $facultyRepository;
-        $this->subjectRepository = $subjectRepository;
-        $this->page = $page;
-        $this->avg = $avg;
+        $this->studentRepository = $_studentRepository;
+        $this->userRepository = $_userRepository;
+        $this->facultyRepository = $_facultyRepository;
+        $this->subjectRepository = $_subjectRepository;
+        $this->page = $_page;
+        $this->avg = $_avg;
     }
 
     /**
@@ -151,7 +151,7 @@ class StudentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response_
      */
     public function destroy($id)
     {
@@ -179,12 +179,13 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
+// Handle Register Subject For Student
     public function registerSubject(Request $request)
     {
         $students = $this->studentRepository->newModel();
         $studentId = $this->studentRepository->getStudentById();
         $students->subjects()->attach($request->subject_id, ['student_id' => $studentId]);
-        Session::flash('success', 'Resgiste Subject Successful');
+        Session::flash('success', 'Resgister Subject Successful');
         return redirect()->route('subjects.index');
     }
 

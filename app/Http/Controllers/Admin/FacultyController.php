@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
 {
-    protected $facultyRepository, $studentRepository;
+    protected $_facultyRepository, $_studentRepository;
 
-    public function __construct(FacultyRepositoryInterface $facultyRepository,
-                                StudentRepositoryInterface $studentRepository)
+    public function __construct(FacultyRepositoryInterface $_facultyRepository,
+                                StudentRepositoryInterface $_studentRepository)
     {
-        $this->facultyRepository = $facultyRepository;
-        $this->studentRepository = $studentRepository;
+        $this->facultyRepository = $_facultyRepository;
+        $this->studentRepository = $_studentRepository;
 
     }
 
@@ -29,7 +29,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $student = Config::get('constants.options.roleStudent');
+        $student = Config::get('constan_ts.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
         return view('admin.faculties.index', compact('faculties', 'student'));
     }
@@ -91,8 +91,7 @@ class FacultyController extends Controller
 
     public function update(FacultyRequest $request, $id)
     {
-        $data = $request->all();
-        $this->facultyRepository->update($id, $data);
+        $this->facultyRepository->update($id, $request->all());
         Session::flash('success', 'Update Successful');
         return redirect()->route('faculties.index');
     }

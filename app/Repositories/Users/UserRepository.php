@@ -5,7 +5,8 @@ namespace App\Repositories\Users;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository extends BaseRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements
+    UserRepositoryInterface
 {
 
     /**

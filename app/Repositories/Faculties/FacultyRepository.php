@@ -4,7 +4,8 @@ namespace App\Repositories\Faculties;
 
 use App\Repositories\BaseRepository;
 
-class   FacultyRepository extends BaseRepository implements FacultyRepositoryInterface
+class   FacultyRepository extends BaseRepository implements
+    FacultyRepositoryInterface
 {
 
     /**

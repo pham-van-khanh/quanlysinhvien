@@ -20,13 +20,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectController extends Controller
 {
-    protected $subjectRepository, $studentRepository;
+    protected $_subjectRepository, $_studentRepository;
 
-    public function __construct(SubjectRepositoryInterface $subjectRepository,
-                                StudentRepositoryInterface $studentRepository)
+    public function __construct(SubjectRepositoryInterface $_subjectRepository,
+                                StudentRepositoryInterface $_studentRepository)
     {
-        $this->subjectRepository = $subjectRepository;
-        $this->studentRepository = $studentRepository;
+        $this->subjectRepository = $_subjectRepository;
+        $this->studentRepository = $_studentRepository;
     }
 
     /**
@@ -73,8 +73,7 @@ class SubjectController extends Controller
      */
     public function store(SubjectRequest $request)
     {
-        $data = $request->all();
-        $data = $this->subjectRepository->create($data);
+        $this->subjectRepository->create($request->all());
         Session::flash('success', 'Create Subject Successful');
         return redirect()->route('subjects.index');
     }
@@ -148,14 +147,15 @@ class SubjectController extends Controller
             $listSubject = [];
             $student = $this->studentRepository->find($learnedStudentId);
             $subject_point = $student->subjects;
-            if ($subject_point->count() == 0) {
+            $countMark = $subject_point->count();
+            if ($countMark == 0) {
                 $listSubject = $subjects;
             } else {
                 foreach ($subjects as $sub) {
-                    for ($i = 0; $i < $subject_point->count(); $i++) {
+                    for ($i = 0; $i < $countMark; $i++) {
                         if ($sub->id == $subject_point[$i]->id) {
                             break;
-                        } elseif ($i == $subject_point->count() - 1) {
+                        } elseif ($i == $countMark - 1) {
                             $listSubject[] = $sub;
                         }
                     }
@@ -192,9 +192,9 @@ class SubjectController extends Controller
     public function updateMark(Request $request, $student)
     {
         $student = $this->studentRepository->find($student);
-//        $student->subjects()->sync([$student => $request->mark]);
         $students = $student->subjects;
-        for ($i = 0; $i < $students->count(); $i++) {
+        $countStudent = $students->count();
+        for ($i = 0; $i < $countStudent; $i++) {
             if ($request->mark[$i] != 'null') {
                 $student->subjects[$i]->pivot
                     ->update([

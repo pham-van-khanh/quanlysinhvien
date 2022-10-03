@@ -4,7 +4,8 @@ namespace App\Repositories\Subjects;
 
 use App\Repositories\BaseRepository;
 
-class SubjectRepository extends BaseRepository implements SubjectRepositoryInterface
+class SubjectRepository extends BaseRepository implements
+    SubjectRepositoryInterface
 {
     /**
      * @return mixed
