@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 Route::middleware(['auth', 'permission:list'])->group(function () {
     Route::resource('faculties', FacultyController::class)->only('index');
     Route::resource('subjects', SubjectController::class)->only('index');
-//    Route::resource('students/{students}', StudentController::class)->only(['edit' => 'update']);
 });
 Route::get('information/{student}/', [InformationController::class, 'index'])->name('information');
 Route::post('information/uploadImage/{student}', [InformationController::class, 'uploadImage'])->name('uploadImage');
@@ -51,7 +50,7 @@ Route::post('student/registerSubject', [StudentController::class, 'registerSubje
 Route::get('list-student-deleted', [StudentController::class, 'getListDeleted'])
     ->name('student-list-deleted');
 
-Route::get('student/{student}/restore', [StudentController::class, 'restore'])->name('student-restore');
+Route::post('student/{student}/restore', [StudentController::class, 'restore'])->name('student-restore');
 Route::get('send-mail-student', [SubjectController::class, 'sendMailStudent'])->name('mail_subjects_all');
 
 Route::prefix('student')->group(function () {
@@ -59,9 +58,6 @@ Route::prefix('student')->group(function () {
     Route::post('{student}', [StudentController::class, 'handleUpdate']);
     Route::put('register/{id}/faculty', [StudentController::class, 'registerFaculty'])->name('registerFaculty');
 });
-//Route::prefix('marks')->group(function () {
-//    Route::get('subject/{student}', [StudentController::class, 'show']);
-//});
 
 Route::get('subject/{subject}/export', [SubjectController::class, 'export'])->name('export');
 

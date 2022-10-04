@@ -35,7 +35,9 @@ class StudentController extends Controller
                                 FacultyRepositoryInterface $_facultyRepository,
                                 UserRepositoryInterface    $_userRepository,
                                 SubjectRepositoryInterface $_subjectRepository,
-                                Config                     $_page, Config $_avg)
+                                Config                     $_page,
+                                Config                     $_avg
+    )
     {
         $this->studentRepository = $_studentRepository;
         $this->userRepository = $_userRepository;
@@ -113,8 +115,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-//        $t = Student::find($id);
-//        dd($t);
+
     }
 
     /**
@@ -126,7 +127,6 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = $this->studentRepository->find($id);
-//        return view('admin.students.form', compact('student'));
         return response()->json([
             'student' => $student,
             'id' => $student->id,
@@ -142,8 +142,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->studentRepository->find($id)->update($request->all());
-        $student = $this->studentRepository->find($id);
+        $student = $this->studentRepository->find($id)->update($request->all());
         return response()->json(['data' => $student, 'student' => $request->all(), 'studentid' => $id, 'message' => 'Cập nhật thông tin sinh viên thành công'], 200);
     }
 
@@ -156,9 +155,6 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = $this->studentRepository->find($id);
-        $users = User::where('id', $student->user_id)->get();
-        $user = $users[0]->id;
-        $user->delete();
         $student->delete();
         Session::flash('success', 'Delete Student Successful');
         return redirect()->route('students.index');
@@ -172,20 +168,17 @@ class StudentController extends Controller
 
     public function restore($id)
     {
-        $model = $this->studentRepository->find($id);
-        dd($model);
-        $model->restore();
+        Student::where('id', $id)->withTrashed()->restore();
         Session::flash('success', 'Restore Student Successful');
-        return redirect()->route('students.index');
+        return redirect()->route('student-list-deleted');
     }
 
-// Handle Register Subject For Student
     public function registerSubject(Request $request)
     {
         $students = $this->studentRepository->newModel();
         $studentId = $this->studentRepository->getStudentById();
         $students->subjects()->attach($request->subject_id, ['student_id' => $studentId]);
-        Session::flash('success', 'Resgister Subject Successful');
+        Session::flash('success', 'Register Subject Successful');
         return redirect()->route('subjects.index');
     }
 
@@ -197,6 +190,7 @@ class StudentController extends Controller
         $count = 0;
         if ($student->faculty_id) {
             Session::flash('error', 'You can not register');
+
             return redirect()->back();
         }
         foreach ($student->subjects as $std) {
@@ -204,6 +198,7 @@ class StudentController extends Controller
                 $count++;
                 if (!$std->pivot->mark) {
                     Session::flash('error', 'You can not register');
+
                     return redirect()->back();
                 }
                 $sum += $std->pivot->mark;
@@ -213,10 +208,10 @@ class StudentController extends Controller
                 return redirect()->back();
             }
         }
-
+        $avgPoint = 5;
         if ($sum) {
             $avg = $sum / $count;
-            if ($avg < 5) {
+            if ($avg < $avgPoint) {
                 Session::flash('error', 'Your GPA Is Not Eligible To Apply For This Course ');
 
                 return redirect()->back();
@@ -230,7 +225,8 @@ class StudentController extends Controller
                 return redirect()->back();
             }
         }
-        Session::flash('error', 'You can not register');
+        $errMessage;
+
         return redirect()->back();
     }
 
@@ -242,12 +238,10 @@ class StudentController extends Controller
         foreach ($students as $param) {
             $mark .= $param->pivot->mark;
         }
-//        dd($mark);
         $html = '';
         foreach ($students as $key) {
             $html .= '<option>' . $key->name . '</option>';
         }
-        //    "<select id='selectbox' class='form-control'>" + "<option value='##'>" + 'Subject'  +"</option>" + "</select>"
         return view('admin.students.update-mark', compact('students', 'html', 'mark'));
     }
 

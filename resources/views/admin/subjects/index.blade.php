@@ -15,7 +15,7 @@
                 <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
                 <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')
                 </th>
-                @if(Auth::user()->roles[0]->name == $admin)
+                @if(Auth::user()->roles[0]->name == $roleAdmin)
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
                         @lang('welcome.col-act')
                     </th>
@@ -53,15 +53,17 @@
                                 </a>
                             @endcan
                         </td>
+
                         @if(Auth::user()->roles[0]->name == $roleStudent)
                             @if(isset($getMark))
                                 <td></td>
                                 <td class=" text-center"><input name="subject_id[]"
                                                                 value="{{$subject->id}}" type="checkbox"></td>
                             @else
-                                @for($i = 0; $i < $studentSubject->count(); $i++)
+
+                                @for($i = 0; $i < $countStudentSubject; $i++)
                                     @if($subject->id == $studentSubject[$i]->id)
-                                        @if(!$studentSubject[$i]->pivot->mark)
+                                        @if($studentSubject[$i]->pivot->mark === null)
                                             <td class="text-success text-sm text-center">@lang('welcome.row-studying')</td>
                                             <td class="text-center "><input disabled type="checkbox" checked></td>
                                         @else
@@ -69,7 +71,7 @@
                                             <td class="text-center"><input disabled type="checkbox" checked></td>
                                         @endif
                                         @break
-                                    @elseif($i == $studentSubject->count() - 1)
+                                    @elseif($i == $countStudentSubject - 1)
                                         @if($subject->id != $studentSubject[$i]->id)
                                             <td></td>
                                             <td class="text-center">
@@ -92,15 +94,28 @@
                     </tr>
                 @endforeach
                 @if(Auth::user()->roles[0]->name == $roleStudent)
-
-                    @if($student->subjects)
-                        @if(!'checkbox')
-                            <button disabled class="btn btn-outline-secondary btn-sm text-danger"> GPA:  </button>
-                        @else
-{{--                            <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>--}}
-                        @endif
+                    @if($countSubject != $countStudentSubject)
+                        <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
                     @else
-                        2
+                        @for( $i=0; $i < $countSubject; $i++)
+                            @if($student->subjects[$i]->pivot->mark === null)
+                                <button
+                                    class="btn btn-outline-success text-sm text-center text-success text-sm-center
+                                    disabled"> @lang('welcome.row-studying') </button>
+                                @break
+                            @elseif($i == $countSubject - 1)
+                                @if(round($student->subjects->avg('pivot.mark'), 2) < 5)
+                                    <button
+                                        class="btn btn-outline-danger text-sm text-center text-danger text-sm-center
+                                    disabled">GPA: {{round($student->subjects->avg('pivot.mark'), 2)}} </button>
+                                @else
+                                    <button
+                                        class="btn btn-outline-success text-sm text-center text-success text-sm-center
+                                    disabled">GPA: {{round($student->subjects->avg('pivot.mark'), 2)}}</button>
+                                @endif
+                                @break
+                            @endif
+                        @endfor
                     @endif
                 @endif
             </form>

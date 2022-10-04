@@ -49,5 +49,4 @@ interface EloquentRepositoryInterface
 
     public function count();
 
-
 }

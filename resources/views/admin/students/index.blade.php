@@ -200,7 +200,7 @@
                             <td class="text-sm text-success text-sm-center"> @lang('welcome.row-studying') </td>
                         @else
                             @for($i=0; $i < $countSubject; $i++)
-                                @if(!$item->subjects[$i]->pivot->mark)
+                                @if($item->subjects[$i]->pivot->mark === null)
                                     <td class="text-sm text-center text-success text-sm-center"> @lang('welcome.row-studying') </td>
                                     @break
                                 @elseif($i == $countSubject - 1)
@@ -214,9 +214,6 @@
                         @endif
                         <td class="text-center">
                             @can('edit')
-                                {{--                                                                <a style="color: #febc06" href="{{route('students.edit', $item->id)}}">--}}
-                                {{--                                                                    <i class="fa fa-edit"></i>--}}
-                                {{--                                                                </a>--}}
                                 <a style="color: #febc06" href="" onclick="update({{ $item->id }})"
                                    data-bs-toggle="modal"
                                    data-bs-target="#edit-bookmark" id="editStudent" data-id="{{ $item->id }}">
@@ -319,6 +316,11 @@
             </div>
         </div>
         <style>
+            /*.modal-content {*/
+            /*    overflow: scroll;*/
+            /*    height: 800px;*/
+            /*}*/
+
             a {
                 font-size: 20px;
             }

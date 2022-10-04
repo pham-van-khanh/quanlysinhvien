@@ -54,9 +54,15 @@
                         </td>
                         @if(Auth::user()->roles[0]->name == $student)
                             <td class="text-center">
-                                {{ Form::open(['route' => ['registerFaculty', $item->id], 'method' => 'put']) }}
-                                {{ Form::button('<i class="fa fa-check" style="color: white"></i>', ['class' => 'btn btn-info btn-sm', 'type' => 'submit']) }}
-                                {{ Form::close() }}
+                                @if($studentId->faculty_id)
+                                    {{ Form::open(['route' => ['registerFaculty', $item->id], 'method' => 'put']) }}
+                                    {{ Form::button('<i class="fa fa-check" style="color: white"></i>', ['class' => 'btn btn-info btn-sm disabled', 'type' => 'submit']) }}
+                                    {{ Form::close() }}
+                                @else
+                                    {{ Form::open(['route' => ['registerFaculty', $item->id], 'method' => 'put']) }}
+                                    {{ Form::button('<i class="fa fa-check" style="color: white"></i>', ['class' => 'btn btn-info btn-sm', 'type' => 'submit']) }}
+                                    {{ Form::close() }}
+                                @endif
                             </td>
                         @endif
                     </tr>

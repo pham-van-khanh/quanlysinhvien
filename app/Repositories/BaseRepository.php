@@ -91,4 +91,5 @@ abstract class BaseRepository implements EloquentRepositoryInterface
     {
         return $this->model->count();
     }
+
 }

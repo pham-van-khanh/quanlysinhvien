@@ -19,13 +19,13 @@ $(document).ready(function () {
             var tr = '';
             data.subjects.forEach(element => {
                 tr += `
-                        <tr style=" text-align: left; height: 2px" >
+                        <tr style=" text-align: left; height: 2px" data-scroll="7" >
                             <td>${element.id}</td>
                             <td><a class="btn btn-info btn-sm" style="color: white; width: 300px" target="_blank" href="subjects/${element.id}">${element.name}</a></td>
                             <td>
                             <div class="row mb-4">
                                         <input type="hidden" name="_token" value="${token}" >
-                                        <div class="col-8" style="margin-top: 8px" >
+                                        <div class="col-10" style="margin-top: 8px" >
                                            <input type="text" name="mark[]" id="mark" style="border: none; background-color: " class="form-control small" value="${element.pivot.mark}">
                                         </div>
                             </div>

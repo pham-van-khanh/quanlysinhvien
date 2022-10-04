@@ -29,38 +29,16 @@
                             {{ $item->deleted_at}}
                         </td>
                         <td class="text-center">
-                            @can('edit')
-                                <a style="color: #febc06" href="{{ route('faculties.edit', $item->id) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                            @endcan
-                            @can('delete')
-                                <a style="color: red" href="{{ route('faculties.destroy', ['faculty' => $item->id]) }}" class="btnDelete">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            @endcan
+                            {!! Form::open(['method' => 'POST','route' => ['student-restore', $item->id]]) !!}
+                            {!! Form::submit('Restore', ['class' => 'btn btn-primary btn-sm']) !!}
+                            {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach
             </table>
-            <form action="" method="POST" id="form-delete">
-                {{ method_field('DELETE') }}
-                {!! csrf_field() !!}
-            </form>
         </div>
         <div>
             {{$student->links()}}
         </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script>
-            $('.btnDelete').click(function (e) {
-                e.preventDefault();
-                var href = $(this).attr('href');
-                $('#form-delete').attr('action', href);
-                if (confirm('Are you sure?')) {
-                    $('#form-delete').submit();
-                }
-            });
-        </script>
     </div>
 @endsection

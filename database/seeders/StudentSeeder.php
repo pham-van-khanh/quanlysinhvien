@@ -24,8 +24,8 @@ class StudentSeeder extends Seeder
 //        $student = Student::factory(10)->create();
 //        $subject = Subject::factory(10)->create();
 
-
-
+//
+//
         $student = Student::pluck('id')->all();
         $subject = Subject::pluck('id')->all();
         for($i =  1; $i <= 40; $i++) {

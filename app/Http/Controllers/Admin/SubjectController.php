@@ -37,21 +37,22 @@ class SubjectController extends Controller
     public function index()
     {
         $locale = App::currentLocale();
-        $subjects = $this->subjectRepository->subjectList()->Paginate(5);
-        $admin = Config::get('constants.options.roleAdmin');
+        $subjects = $this->subjectRepository->subjectList();
+        $roleAdmin = Config::get('constants.options.roleAdmin');
         $roleStudent = Config::get('constants.options.roleStudent');
 
-        if (Auth::user()->roles[0]->name == $admin) {
-            return view('admin.subjects.index', compact('subjects', 'admin', 'roleStudent'));
+        if (Auth::user()->roles[0]->name == $roleAdmin) {
+            return view('admin.subjects.index', compact('subjects', 'roleAdmin', 'roleStudent'));
         }
         $student = Student::where('user_id', Auth::id())->first();
         $studentSubject = $student->subjects;
-
+        $countStudentSubject = $studentSubject->count();
+        $countSubject = $this->subjectRepository->count();
         if (!isset($studentSubject[0])) {
             $getMark = 1;
-            return view('admin.subjects.index', compact('subjects', 'getMark', 'student', 'admin', 'roleStudent'));
+            return view('admin.subjects.index', compact('subjects', 'countSubject', 'getMark', 'student', 'roleAdmin', 'roleStudent'));
         }
-        return view('admin.subjects.index', compact('subjects', 'studentSubject', 'student', 'admin', 'roleStudent'));
+        return view('admin.subjects.index', compact('subjects', 'countSubject', 'studentSubject', 'countStudentSubject', 'student', 'roleAdmin', 'roleStudent'));
     }
 
     /**
@@ -162,7 +163,7 @@ class SubjectController extends Controller
                 }
             }
             $mailable = new SubjectMail($listSubject);
-            Mail::to($student->email)->queue($mailable);
+            Mail::to($student->email)->send($mailable);
         }
         return redirect()->route('students.index')->with('message', 'Successfully');
     }

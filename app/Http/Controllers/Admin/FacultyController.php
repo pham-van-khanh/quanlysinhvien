@@ -29,9 +29,13 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $student = Config::get('constan_ts.options.roleStudent');
+        $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
-        return view('admin.faculties.index', compact('faculties', 'student'));
+        $studentId = $this->studentRepository->getStudent();
+        if (empty($studentId)) {
+            return view('admin.faculties.index', compact('faculties', 'student'));
+        }
+        return view('admin.faculties.index', compact('faculties', 'student', 'studentId'));
     }
 
     /**
@@ -53,7 +57,7 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-        $data = $this->facultyRepository->create($request->all());
+        $this->facultyRepository->create($request->all());
         Session::flash('success', 'Create Faculty Successful');
         return redirect()->route('faculties.index');
     }
