@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
 use App\Models\Student;
-use App\Models\User;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
@@ -143,7 +142,7 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $student = $this->studentRepository->find($id)->update($request->all());
-        return response()->json(['data' => $student, 'student' => $request->all(), 'studentid' => $id, 'message' => 'Cập nhật thông tin sinh viên thành công'], 200);
+        return response()->json(['data' => $student, 'student' => $request->all(), 'studentid' => $id], 200);
     }
 
     /**
@@ -225,7 +224,7 @@ class StudentController extends Controller
                 return redirect()->back();
             }
         }
-        $errMessage;
+        Session::flash('error', 'You can not register');
 
         return redirect()->back();
     }

@@ -16,4 +16,7 @@ interface StudentRepositoryInterface
 
     public function getStudent();
 
+    public function validateAge($request);
+
+
 }

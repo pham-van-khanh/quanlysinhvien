@@ -23,4 +23,9 @@ class UserRepository extends BaseRepository implements
     {
         return $this->model->orderBy('updated_at', 'DESC')->where('id', '!=', 1);
     }
+
+    public function getUserById()
+    {
+        return $this->model->orderBy('updated_at', 'DESC')->where('id', '!=', 1);
+    }
 }

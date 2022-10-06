@@ -7,6 +7,7 @@ use App\Repositories\BaseRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 
 class StudentRepository extends BaseRepository implements
     StudentRepositoryInterface
@@ -18,6 +19,23 @@ class StudentRepository extends BaseRepository implements
     public function getModel()
     {
         return Student::class;
+    }
+
+    public function validateAge($request)
+    {
+        if ($request->input('price') != 0 && $request->input('price_sale') != 0
+            && $request->input('price_sale') >= $request->input('price')
+        ) {
+            Session::flash('error', 'Giá giảm phải nhỏ hơn giá gốc');
+            return false;
+        }
+
+        if ($request->input('price_sale') != 0 && (int)$request->input('price') == 0) {
+            Session::flash('error', 'Vui lòng nhập giá gốc');
+            return false;
+        }
+
+        return true;
     }
 
     public function getStudents()

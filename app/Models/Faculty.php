@@ -10,4 +10,9 @@ class Faculty extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
 }
