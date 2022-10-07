@@ -11,7 +11,6 @@ use App\Models\Student;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
@@ -36,7 +35,6 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $locale = App::currentLocale();
         $subjects = $this->subjectRepository->subjectList();
         $roleAdmin = Config::get('constants.options.roleAdmin');
         $roleStudent = Config::get('constants.options.roleStudent');
@@ -44,7 +42,7 @@ class SubjectController extends Controller
         if (Auth::user()->roles[0]->name == $roleAdmin) {
             return view('admin.subjects.index', compact('subjects', 'roleAdmin', 'roleStudent'));
         }
-        $student = Student::where('user_id', Auth::id())->first();
+        $student = $this->studentRepository->getStudent();
         $studentSubject = $student->subjects;
         $countStudentSubject = $studentSubject->count();
         $countSubject = $this->subjectRepository->count();
@@ -139,6 +137,8 @@ class SubjectController extends Controller
     {
         $subjects = $this->subjectRepository->getAll();
         $students = $this->studentRepository->getStudents();
+        $learnedStudentIds = [];
+
         foreach ($students as $student) {
             if ($student->subjects->count() !== $subjects->count()) {
                 $learnedStudentIds[] = $student->id;

@@ -94,8 +94,9 @@
                     </tr>
                 @endforeach
                 @if(Auth::user()->roles[0]->name == $roleStudent)
-                    @if($countSubject != $countStudentSubject)
-                        <button type="submit" class="btn btn-outline-success btn-sm"> Registration</button>
+                    @if( $countSubject != $countStudentSubject)
+                        <button type="submit"
+                                class="btn btn-outline-success btn-sm"> @lang('welcome.act-register') </button>
                     @else
                         @for( $i=0; $i < $countSubject; $i++)
                             @if($student->subjects[$i]->pivot->mark === null)
@@ -116,6 +117,7 @@
                                 @break
                             @endif
                         @endfor
+
                     @endif
                 @endif
             </form>

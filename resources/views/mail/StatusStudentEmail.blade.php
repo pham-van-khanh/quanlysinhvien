@@ -25,7 +25,7 @@
                 <tr>
                     <td style="text-align:center;">
                         <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                            <img width="60" src="https://i.ibb.co/hL4XZp2/android-chrome-192x192.png" title="logo"
+                            <img width="60" src="https://banner2.cleanpng.com/20180919/jhv/kisspng-lionel-messi-fc-barcelona-la-liga-image-portable-n-5ba24212879e27.4531044315373604025555.jpg" title="logo"
                                  alt="logo">
                         </a>
                     </td>
@@ -51,12 +51,12 @@
                                         <tr>
                                             <td
                                                 style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:rgba(0,0,0,.64)">
-                                                あなたは次の科目に登録されていません:
+                                                Đánh giá kết quả học tập của bạn :
                                             </td>
                                             <td
                                                 style="padding: 10px; border-bottom: 1px solid #ededed; color: #455056;">
-                                                @if($result = 'You Passed')
-                                                    <p style="color: #19e31c">{{$result}}</p>
+                                                @if($result == 'Passed')
+                                                    <p style="color: #02810a">{{$result}}</p>
                                                 @else
                                                     <b style="color: #e50b3d">{{$result}}</b>
                                                 @endif

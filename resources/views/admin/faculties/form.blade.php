@@ -21,7 +21,7 @@
 
     @if($faculty->id)
         {{ Form::model($faculty, array('route' => ['faculties.destroy', $faculty->id], 'method' => 'DELETE'))}}
-        {{ Form::submit(__('welcome.act-delete'), ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"])}}
+        {{ Form::submit(__('welcome.act-delete'), ['class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"])}}
         {{ Form::close() }}
     @endif
     {{ Form::close() }}

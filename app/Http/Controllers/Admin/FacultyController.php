@@ -109,12 +109,13 @@ class FacultyController extends Controller
     public function destroy($id)
     {
         $faculty = $this->facultyRepository->find($id);
-        if ($faculty->student->count()) {
+        if ($faculty->student) {
             Session::flash('error', 'Cannot Delete Faculty Successful');
+            return redirect()->back();
+        } else {
+            $faculty->delete();
+            Session::flash('success', 'Delete Faculty Successful');
             return redirect()->route('faculties.index');
         }
-        $faculty->delete();
-        Session::flash('success', 'Delete Faculty Successful');
-        return redirect()->route('faculties.index');
     }
 }

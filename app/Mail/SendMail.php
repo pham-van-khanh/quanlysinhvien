@@ -31,7 +31,7 @@ class SendMail extends Mailable
     public function build()
     {
         return $this->view('mail.mail')
-            ->subject('Successful Active Account Login')
+            ->subject('CONGRATULATIONS')
             ->with([
                 'user' => $this->user,
             ]);

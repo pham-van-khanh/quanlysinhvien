@@ -7,11 +7,10 @@
             <table class="table align-items-center mb-0">
                 <thead>
                 <tr>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Stt</th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Name
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-name')
                     </th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">Time
-                        Deleted
+                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-time-deleted')
                     </th>
                     <th></th>
                 </tr>
@@ -30,7 +29,7 @@
                         </td>
                         <td class="text-center">
                             {!! Form::open(['method' => 'POST','route' => ['student-restore', $item->id]]) !!}
-                            {!! Form::submit('Restore', ['class' => 'btn btn-primary btn-sm']) !!}
+                            {!! Form::submit(__('welcome.act-restore'), ['class' => 'btn btn-primary btn-sm']) !!}
                             {!! Form::close() !!}
                         </td>
                     </tr>

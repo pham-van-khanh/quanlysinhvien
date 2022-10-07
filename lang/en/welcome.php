@@ -25,7 +25,7 @@ return [
     'col-birthday' => 'Birthday',
     'col-gender' => 'Gender',
     'col-address' => 'Address',
-    'col-email' => 'Address',
+    'col-email' => 'Email',
     'col-avatar' => 'Avatar',
     'col-time' => 'Created Time',
     'col-act' => 'Action',
@@ -36,6 +36,7 @@ return [
     'col-deleted-student' => 'Deleted Student',
     'col-age-from' => 'Age From',
     'col-age-to' => 'Age To',
+    'col-time-deleted' => 'Delete at',
 
     'filter' => 'Filter',
     'act-close' => 'Close',
@@ -46,6 +47,7 @@ return [
     'act-update-point' => 'Update Mark Student',
     'act-register' => 'Register',
     'act-logout' => 'Logout',
+    'act-restore' => 'Restore',
 
     'row-male' => 'Male',
     'row-female' => 'FeMale',

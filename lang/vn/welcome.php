@@ -25,6 +25,7 @@ return [
     'col-name' => 'Tên',
     'col-avatar' => 'Ảnh Đại Diện',
     'col-time' => 'Thời gian tạo',
+    'col-time-deleted' => 'Xóa vào lúc',
     'col-act' => 'Hành Động',
     'col-phone' => 'Số điện thoại',
     'col-birthday' => 'Sinh nhật',
@@ -47,6 +48,7 @@ return [
     'act-register' => 'Đăng ký',
     'act-update-point' => 'Cập nhật điểm cho sinh viên',
     'act-logout' => 'Đăng Xuất',
+    'act-restore' => 'Bỏ xóa',
 
     'row-male' => 'Nam',
     'row-female' => 'Nữ',

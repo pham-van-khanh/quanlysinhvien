@@ -316,10 +316,7 @@
             </div>
         </div>
         <style>
-            .modal-content {
-                overflow: scroll;
-                height: 380px;
-            }
+
 
             a {
                 font-size: 20px;

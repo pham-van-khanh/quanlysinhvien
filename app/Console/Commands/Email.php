@@ -42,19 +42,20 @@ class Email extends Command
         }
         foreach ($listStudentLearned as $value) {
             for ($i = 0; $i < $subject->count(); $i++) {
-                if ($value->subjects[$i]->pivot->mark == null) {
+                if ($value->subjects[$i]->pivot->mark === null) {
                     break;
                 } elseif ($i == $subject->count() - 1) {
                     $listStudentFullMark[] = $value;
                 }
             }
         }
+
         $result = '';
         foreach ($listStudentFullMark as $student) {
-            if ($student->subjects->avg('pivot.mark') > 5) {
-                $result = 'You Passed';
+            if ($student->subjects->avg('pivot.mark') >= 5) {
+                $result = 'Passed';
             } else {
-                $result = 'You Fail';
+                $result = 'Failed';
             }
             Mail::to($student->email)->queue(new StatusStudentMail($result));
         }
