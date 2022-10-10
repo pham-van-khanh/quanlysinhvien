@@ -35,6 +35,5 @@ class StudentSeeder extends Seeder
                 'mark' => rand(0, 10),
             ]);
         }
-
     }
 }

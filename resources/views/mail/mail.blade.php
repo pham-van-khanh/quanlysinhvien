@@ -23,7 +23,7 @@
                 <tr>
                     <td style="text-align:center;">
                         <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                            <img width="60" src="https://banner2.cleanpng.com/20180919/jhv/kisspng-lionel-messi-fc-barcelona-la-liga-image-portable-n-5ba24212879e27.4531044315373604025555.jpg" title="logo"
+                            <img width="60" src="https://toppng.com/uploads/preview/fireworks-transparent-11546504371iouqnwykk9.png" title="logo"
                                  alt="logo">
                         </a>
                     </td>

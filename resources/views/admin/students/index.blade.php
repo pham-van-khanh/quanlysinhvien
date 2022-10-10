@@ -34,7 +34,7 @@
                     <h5 class="modal-title">@lang('welcome.act-create') @lang('welcome.student')</h5>
                 </div>
                 <div class="modal-body">
-                    {{ Form::model($student, ['method' => 'POST']) }}
+                    {{ Form::model($student, ['method' => 'POST', 'id'=> 'create-form' ]) }}
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             {!!Form::label('', __('welcome.col-name'))!!}
@@ -99,7 +99,7 @@
     <script type="text/javascript" src="{{asset('dist/js/show_subject.js')}}"></script>
     <div class="card-body px-0 pb-0">
         <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
+            <table class="table align-items-center mb-0" id="student-table">
                 <thead>
                 <tr>
                     <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">

@@ -92,7 +92,7 @@ class StudentController extends Controller
         $student['name'] = $user->name;
         $student['email'] = $user->email;
         $student['faculty_id'] = NULL;
-        $student['avatar'] = 'images/students/Phạm Văn Khánh_T5wx0WCn236nh58fHlZBAyqaR1SPlv4bduoIchwk.png';
+        $student['avatar'] = 'images/users/student.png';
         $student['phone'] = $request['phone'];
         $student['birthday'] = $dt->toDateString();
         $student['gender'] = $request['gender'];

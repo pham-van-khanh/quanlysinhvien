@@ -47,8 +47,10 @@ class SubjectController extends Controller
         $countStudentSubject = $studentSubject->count();
         $countSubject = $this->subjectRepository->count();
         if (!isset($studentSubject[0])) {
+            $countStudentSubject = $studentSubject->count();
+            $countSubject = $this->subjectRepository->count();
             $getMark = 1;
-            return view('admin.subjects.index', compact('subjects', 'countSubject', 'getMark', 'student', 'roleAdmin', 'roleStudent'));
+            return view('admin.subjects.index', compact('subjects', 'countSubject', 'getMark', 'student', 'roleAdmin', 'countStudentSubject', 'roleStudent'));
         }
         return view('admin.subjects.index', compact('subjects', 'countSubject', 'studentSubject', 'countStudentSubject', 'student', 'roleAdmin', 'roleStudent'));
     }
@@ -163,7 +165,7 @@ class SubjectController extends Controller
                 }
             }
             $mailable = new SubjectMail($listSubject);
-            Mail::to($student->email)->send($mailable);
+            Mail::to($student->email)->queue($mailable);
         }
         return redirect()->route('students.index')->with('message', 'Successfully');
     }

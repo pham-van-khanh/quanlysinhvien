@@ -23,7 +23,7 @@
             @else
                 @csrf
                 <a>
-                    <img name="avatar" style="cursor: pointer" id="avatar" src="{{asset('dist/img/camera.png')}}"/>
+                    <img name="avatar" style="cursor: pointer" id="avatar" src="{{asset($students[0]->avatar)}}"/>
                     <input id="fileinput" onchange="loadFile(event)" onClick="toggleButton()" type="file" name="avatar"
                            style="display:none; cursor: pointer"/>
                 </a>

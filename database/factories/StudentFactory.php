@@ -27,7 +27,7 @@ class StudentFactory extends Factory
             'email' => $user->email,
             'faculty_id' => $faculty->id,
             'name' => $user->name,
-            'avatar' => 'images/students/Phạm Văn Khánh_T5wx0WCn236nh58fHlZBAyqaR1SPlv4bduoIchwk.png',
+            'avatar' => 'images/users/student.png',
             'phone' => '0584677817',
             'gender' => rand(0, 1),
             'birthday' => $this->faker->date,

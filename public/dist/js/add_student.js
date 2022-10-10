@@ -21,11 +21,22 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                $('#create-bookmark').removeAttr('style');
-                $('#edit-bookmark').css('padding-right', ' ');
-                $('.modal-backdrop').removeClass('show');
-                $('body').removeAttr("style");
-                $('body').removeClass('modal-open');
+                window.location.reload();
+                // $('#create-bookmark').removeAttr('style');
+                // $('#edit-bookmark').css('padding-right', ' ');
+                // $('.modal-backdrop').removeClass('show');
+                // $('body').removeAttr("style");
+                // $('body').removeClass('modal-open');
+                // $('#student-table tbody').prepend('<tr id="' + data.student.id + '">' +
+                //     '<td>' + data.student.id + '</td>' +
+                //     '<td>' + data.student.name + '</td>' +
+                //     '<td><img width="100px" src="http://127.0.0.1:8000/public/images/users/" ' + data.student.avatar + '"></td>' +
+                //     '<td>Have not registered enough faculty</td>' +
+                //     '<td><a data-id="' + data.student.id + '" data-toggle="modal" class="btnModal gradient-button gradient-button-3" data-target="#exampleModal"><i class="fa fa-arrow-up text-white"></i></a></td>' +
+                //     '<td>Have not registered enough subjects</td>' +
+                //     '<td><a style="color: #febc06" href="" onclick="update({}})" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editStudent" data-id="' + data.student.id + ' "><i class="fa fa-edit"></i></a></td>' +
+                //     '<button class="btn btn-danger btn-xs btnDelete" data-id="' + data.student.id + '" id="deleteStudent"><i class="fa-solid fa-trash"></i></button></td></tr>');
+                // $('#create-form')[0].reset();
             },
             error: function (errors) {
                 console.log(errors.responseJSON.message);
