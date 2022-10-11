@@ -38,9 +38,9 @@ class SubjectController extends Controller
         $subjects = $this->subjectRepository->subjectList();
         $roleAdmin = Config::get('constants.options.roleAdmin');
         $roleStudent = Config::get('constants.options.roleStudent');
-
+        $countSubject = $this->subjectRepository->count();
         if (Auth::user()->roles[0]->name == $roleAdmin) {
-            return view('admin.subjects.index', compact('subjects', 'roleAdmin', 'roleStudent'));
+            return view('admin.subjects.index', compact('subjects', 'roleAdmin', 'roleStudent', 'countSubject'));
         }
         $student = $this->studentRepository->getStudent();
         $studentSubject = $student->subjects;

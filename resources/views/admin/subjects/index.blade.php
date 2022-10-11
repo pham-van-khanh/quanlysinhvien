@@ -12,24 +12,28 @@
         <table class="table table-responsive-sm">
             <thead>
             <tr>
-                <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
-                <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')
-                </th>
-                @if(Auth::user()->roles[0]->name == $roleAdmin)
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        @lang('welcome.col-act')
+                @if($countSubject)
+                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                    <th class="text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">@lang('welcome.col-name')
                     </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        @lang('welcome.act-update-point')
-                    </th>
+                    @if(Auth::user()->roles[0]->name == $roleAdmin)
+                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                            @lang('welcome.col-act')
+                        </th>
+                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                            @lang('welcome.act-update-point')
+                        </th>
+                    @else
+                        <th></th>
+                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                            @lang('welcome.col-point')
+                        </th>
+                        <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
+                            @lang('welcome.act-register')
+                        </th>
+                    @endif
                 @else
-                    <th></th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        @lang('welcome.col-point')
-                    </th>
-                    <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder opacity-7">
-                        @lang('welcome.act-register')
-                    </th>
+                    <center><th class="text-uppercase text-center text-5xl opacity-8 font-weight-border">Null Subject</th></center>
                 @endif
             </tr>
             </thead>
@@ -60,7 +64,6 @@
                                 <td class=" text-center"><input name="subject_id[]"
                                                                 value="{{$subject->id}}" type="checkbox"></td>
                             @else
-
                                 @for($i = 0; $i < $countStudentSubject; $i++)
                                     @if($subject->id == $studentSubject[$i]->id)
                                         @if($studentSubject[$i]->pivot->mark === null)

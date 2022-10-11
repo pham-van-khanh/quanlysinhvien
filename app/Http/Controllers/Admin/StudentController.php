@@ -174,6 +174,10 @@ class StudentController extends Controller
     {
         $students = $this->studentRepository->newModel();
         $studentId = $this->studentRepository->getStudentById();
+        if (!$request->subject_id) {
+            Session::flash('error', 'You dont choose subjects');
+            return redirect()->route('subjects.index');
+        }
         $students->subjects()->attach($request->subject_id, ['student_id' => $studentId]);
         Session::flash('success', 'Register Subject Successful');
         return redirect()->route('subjects.index');
