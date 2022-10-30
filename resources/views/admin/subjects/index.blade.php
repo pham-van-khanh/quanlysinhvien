@@ -33,7 +33,7 @@
                         </th>
                     @endif
                 @else
-                    <center><th class="text-uppercase text-center text-5xl opacity-8 font-weight-border">Null Subject</th></center>
+                    <center><th class="text-uppercase text-center text-5xl opacity-6 font-weight-border">Null Subject</th></center>
                 @endif
             </tr>
             </thead>

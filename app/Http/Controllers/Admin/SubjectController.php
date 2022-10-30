@@ -165,7 +165,7 @@ class SubjectController extends Controller
                 }
             }
             $mailable = new SubjectMail($listSubject);
-            Mail::to($student->email)->queue($mailable);
+            Mail::to($student->email)->send($mailable);
         }
         return redirect()->route('students.index')->with('message', 'Successfully');
     }

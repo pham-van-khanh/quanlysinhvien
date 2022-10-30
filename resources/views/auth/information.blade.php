@@ -100,35 +100,10 @@
             </style>
         </form>
     </header>
-    <div class="profile-bio">
-        <p></p>
-    </div>
-    <ul class="profile-social-links">
-        <li class="text-center col-6">
-            <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile">
-                <svg stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M13.0207 5.82839L15.8491 2.99996L20.7988 7.94971L17.9704 10.7781M13.0207 5.82839L3.41405 15.435C3.22652 15.6225 3.12116 15.8769 3.12116 16.1421V20.6776H7.65669C7.92191 20.6776 8.17626 20.5723 8.3638 20.3847L17.9704 10.7781M13.0207 5.82839L17.9704 10.7781"
-                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </a>
-        </li>
-
-        <li class="text-center col-6">
-            <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path fill="currentColor" fill-rule="evenodd"
-                          d="M10.796 2.244C12.653 1.826 14 3.422 14 5v14c0 1.578-1.347 3.174-3.204 2.756C6.334 20.752 3 16.766 3 12s3.334-8.752 7.796-9.756zm5.497 6.049a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L17.586 13H9a1 1 0 1 1 0-2h8.586l-1.293-1.293a1 1 0 0 1 0-1.414z"
-                          clip-rule="evenodd"/>
-                </svg>
-            </a>
-        </li>
-    </ul>
 </aside>
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-
     html {
         height: 100%;
     }

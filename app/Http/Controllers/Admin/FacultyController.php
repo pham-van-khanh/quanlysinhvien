@@ -31,11 +31,12 @@ class FacultyController extends Controller
     {
         $student = Config::get('constants.options.roleStudent');
         $faculties = $this->facultyRepository->facultyList();
+        $facultyCount = $faculties->count();
         $studentId = $this->studentRepository->getStudent();
         if (empty($studentId)) {
-            return view('admin.faculties.index', compact('faculties', 'student'));
+            return view('admin.faculties.index', compact('faculties', 'student', 'facultyCount'));
         }
-        return view('admin.faculties.index', compact('faculties', 'student', 'studentId'));
+        return view('admin.faculties.index', compact('faculties', 'student', 'studentId', 'facultyCount'));
     }
 
     /**

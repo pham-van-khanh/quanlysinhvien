@@ -12,21 +12,25 @@
     <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
-                <thead>
-                <tr>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-name')
-                    </th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-time')
-                    </th>
-                    <th></th>
-                    <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">
-                        @if(Auth::user()->roles[0]->name == $student)
-                            @lang('welcome.act-register')
-                        @endif
-                    </th>
-                </tr>
-                </thead>
+                @if($facultyCount)
+                    <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-#')</th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-name')
+                        </th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">@lang('welcome.col-time')
+                        </th>
+                        <th></th>
+                        <th class="text-uppercase text-secondary text-xxs text-center font-weight-bolder opacity-7">
+                            @if(Auth::user()->roles[0]->name == $student)
+                                @lang('welcome.act-register')
+                            @endif
+                        </th>
+                    </tr>
+                    </thead>
+                @else
+                    <center><th class="text-uppercase text-center text-5xl opacity-6 font-weight-border">Null Faculty</th></center>
+                @endif
                 <tbody>
                 @foreach ($faculties as $index => $item)
                     <tr>
